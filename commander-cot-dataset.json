@@ -1,0 +1,430 @@
+{
+  "metadata": {
+    "name": "Commander CoT - Operation Planning Dataset",
+    "version": "1.0.0",
+    "description": "3D Force-Graph visualization dataset for military/combat operation planning Chain-of-Thought workflow. Maps 3d-force-graph technical patterns to the Commander's 6-node CoT process: Intent Understanding (21 Clarities), Situation Assessment, Concept Formation (3 Plans), Plan Development, Simulation Trial, and Effect Evaluation.",
+    "generated": "2026-06-07",
+    "system": "Commander CoT Intelligence Agent",
+    "purpose": "Vibe coding dataset for building the Operation Commander CoT 3D visualization system",
+    "dataSource": "3d-force-graph (vasturiano/3d-force-graph v1.80.0) + operation-commander React application"
+  },
+
+  "commander_workflow": {
+    "name": "指挥官智能体工作流",
+    "description": "整体指挥官智能体工作流：上传作战方案 → 意图理解(21项明确) → 情况判断 → 形成3个构想方案 → 选择1个方案 → 制定详细计划 → 仿真推演 → 效果评估 → 决策输出",
+    "total_steps": 8,
+    "nodes": [
+      {
+        "id": "intent-understanding",
+        "index": 0,
+        "label": "意图理解",
+        "label_en": "Intent Understanding",
+        "color": "#4a9eff",
+        "description": "对敌方、我方、战场环境进行21项意图分析明确，包括任务目的、敌方能力、天气地形、时间窗口等",
+        "status": "21项明确分析",
+        "graph_pattern": "auto-colored nodes by category, DAG layout for causal analysis",
+        "key_features": ["nodeAutoColorBy", "dagMode", "nodeLabel", "onNodeClick", "nodeThreeObject"],
+        "visualization": {
+          "layout": "dag",
+          "direction": "lr",
+          "node_grouping": "by_category",
+          "links": "dependency_arrows"
+        }
+      },
+      {
+        "id": "situation-assessment",
+        "index": 1,
+        "label": "情况判断",
+        "label_en": "Situation Assessment",
+        "color": "#34d399",
+        "description": "对战场态势进行全面评估，识别威胁等级、弱点、机会窗口，制定行动限制条件",
+        "status": "态势评估",
+        "graph_pattern": "heatmap coloring by threat level, directional particles for flow",
+        "key_features": ["nodeColor", "nodeVal", "linkDirectionalParticles", "nodeThreeObject"],
+        "visualization": {
+          "layout": "force",
+          "node_grouping": "by_side",
+          "links": "directional_flow"
+        }
+      },
+      {
+        "id": "concept-formation",
+        "index": 2,
+        "label": "形成构想",
+        "label_en": "Concept Formation",
+        "color": "#fbbf24",
+        "description": "基于意图理解和情况判断，形成3个可选构想方案（进攻型、平衡型、保守型）供决策",
+        "status": "3个构想方案",
+        "graph_pattern": "three parallel clusters, each representing a concept option",
+        "key_features": ["nodeThreeObject", "nodeColor", "graph2ScreenCoords", "zoomToFit"],
+        "visualization": {
+          "layout": "three_clusters",
+          "node_grouping": "by_concept",
+          "links": "inter_concept_comparison"
+        }
+      },
+      {
+        "id": "plan-development",
+        "index": 3,
+        "label": "制定计划",
+        "label_en": "Plan Development",
+        "color": "#f97316",
+        "description": "对选定方案进行详细规划，制定具体行动步骤、时间线、资源分配、应急预案",
+        "status": "详细计划制定",
+        "graph_pattern": "timeline/Gantt style DAG with time dimension, expandable nodes",
+        "key_features": ["dagMode", "expand-on-click", "nodeLabel", "linkLabel", "onNodeClick"],
+        "visualization": {
+          "layout": "dag",
+          "direction": "td",
+          "node_grouping": "by_phase",
+          "links": "phase_dependencies"
+        }
+      },
+      {
+        "id": "simulation-trial",
+        "index": 4,
+        "label": "仿真推演",
+        "label_en": "Simulation Trial",
+        "color": "#a78bfa",
+        "description": "在虚拟环境中对作战计划进行实时推演，模拟红蓝双方行动，观察计划执行效果",
+        "status": "实时推演",
+        "graph_pattern": "live updating graph, animated nodes/links, real-time simulation state",
+        "key_features": ["websocket-updates", "pause-resume", "emitParticle", "nodeColor-by-status", "linkDirectionalParticles"],
+        "visualization": {
+          "layout": "force",
+          "node_grouping": "by_force",
+          "links": "combat_flow",
+          "realTime": true
+        }
+      },
+      {
+        "id": "effect-evaluation",
+        "index": 5,
+        "label": "效果评估",
+        "label_en": "Effect Evaluation",
+        "color": "#f43f5e",
+        "description": "对仿真结果进行全面评估，计算胜率、资源消耗、风险系数，给出最终决策建议",
+        "status": "效果评估报告",
+        "graph_pattern": "static summary graph with metrics, bloom effect for emphasis",
+        "key_features": ["nodeVal", "nodeLabel", "bloom-effect", "camera-auto-orbit", "pauseAnimation"],
+        "visualization": {
+          "layout": "radial",
+          "node_grouping": "by_metric",
+          "links": "evaluation_flow"
+        }
+      }
+    ],
+    "edges": [
+      {"source": "intent-understanding", "target": "situation-assessment", "label": "分析结果"},
+      {"source": "situation-assessment", "target": "concept-formation", "label": "态势结论"},
+      {"source": "concept-formation", "target": "plan-development", "label": "选定方案"},
+      {"source": "plan-development", "target": "simulation-trial", "label": "执行计划"},
+      {"source": "simulation-trial", "target": "effect-evaluation", "label": "推演数据"},
+      {"source": "effect-evaluation", "target": "intent-understanding", "label": "迭代优化"}
+    ]
+  },
+
+  "intent_analysis_21_items": {
+    "description": "意图理解的21项明确清单，每个条目可作为图中的一个节点",
+    "categories": [
+      {
+        "name": "任务类 (5项)",
+        "items": [
+          "1. 我方任务目的与最终目标",
+          "2. 作战任务阶段划分",
+          "3. 各阶段成功标准",
+          "4. 任务优先级排序",
+          "5. 任务终止条件"
+        ]
+      },
+      {
+        "name": "敌方类 (5项)",
+        "items": [
+          "6. 敌方兵力部署与配置",
+          "7. 敌方武器系统能力评估",
+          "8. 敌方可能的行动方案",
+          "9. 敌方指挥官风格与习惯",
+          "10. 敌方后勤补给线"
+        ]
+      },
+      {
+        "name": "地形类 (4项)",
+        "items": [
+          "11. 作战区域地形特征",
+          "12. 关键地形节点与控制点",
+          "13. 地形对双方优劣势影响",
+          "14. 机动路线选择"
+        ]
+      },
+      {
+        "name": "天气类 (2项)",
+        "items": [
+          "15. 当前及预测天气状况",
+          "16. 天气对作战行动的影响"
+        ]
+      },
+      {
+        "name": "时间类 (2项)",
+        "items": [
+          "17. 作战时间窗口",
+          "18. 关键时间节点"
+        ]
+      },
+      {
+        "name": "资源类 (3项)",
+        "items": [
+          "19. 我方可用资源与限制",
+          "20. 协同支援力量",
+          "21. 风险评估与应急预案"
+        ]
+      }
+    ]
+  },
+
+  "3d_force_graph_patterns_for_commander": {
+    "description": "3d-force-graph patterns mapped to Commander CoT visualization needs",
+    "pattern_mappings": [
+      {
+        "workflow_node": "意图理解",
+        "pattern_id": "P001-P013",
+        "recommended_pattern": "DAG with auto-coloring by category",
+        "implementation": {
+          "layout": "dagMode('lr')",
+          "node_coloring": "nodeAutoColorBy('category') — 6 categories (任务/敌方/地形/天气/时间/资源)",
+          "node_shapes": "nodeThreeObject — 不同类别用不同几何形状",
+          "arrows": "linkDirectionalArrowLength(4)",
+          "particles": "linkDirectionalParticles(3)",
+          "hover": "onNodeHover — 显示详细分析内容"
+        }
+      },
+      {
+        "workflow_node": "情况判断",
+        "pattern_id": "P004, P005, P013, P019",
+        "recommended_pattern": "Threat heatmap with directional flow",
+        "implementation": {
+          "layout": "force-directed",
+          "node_coloring": "nodeColor — 威胁等级(绿→黄→红)",
+          "node_sizing": "nodeVal — 威胁程度数值",
+          "flow_arrows": "linkDirectionalParticles(4)",
+          "highlight": "onNodeHover — 高亮相关威胁链路"
+        }
+      },
+      {
+        "workflow_node": "形成构想",
+        "pattern_id": "P007, P008, P015",
+        "recommended_pattern": "Three parallel concept clusters",
+        "implementation": {
+          "layout": "force with custom clustering force",
+          "three_clusters": "nodeColor — 3种方案(进攻#e74c3c/平衡#f39c12/保守#3498db)",
+          "camera": "点击方案 → cameraPosition飞向该cluster → zoomToFit",
+          "clustering_force": "自定义d3Force('cluster')聚类力",
+          "selection": "onNodeClick → 高亮选中方案，暗化其他方案"
+        }
+      },
+      {
+        "workflow_node": "制定计划",
+        "pattern_id": "P009, P011, P002",
+        "recommended_pattern": "Expandable timeline DAG",
+        "implementation": {
+          "layout": "dagMode('td')",
+          "phases": "按阶段分层展示",
+          "expand": "点击节点 → 展开子行动计划",
+          "labels": "nodeLabel显示时间和负责人",
+          "link_labels": "linkLabel显示依赖关系"
+        }
+      },
+      {
+        "workflow_node": "仿真推演",
+        "pattern_id": "P014, P005, P016, P019",
+        "recommended_pattern": "Live real-time simulation graph",
+        "implementation": {
+          "layout": "force-directed",
+          "updates": "WebSocket实时推送节点/链路更新",
+          "status_coloring": "nodeColor — 单位状态(活跃#34d399/交火#f43f5e/待命#fbbf24)",
+          "flow": "linkDirectionalParticles — 兵力流向",
+          "pause": "pauseAnimation/resumeAnimation",
+          "performance": "forceEngine('ngraph') for large simulations"
+        }
+      },
+      {
+        "workflow_node": "效果评估",
+        "pattern_id": "P012, P022, P002",
+        "recommended_pattern": "Summary metrics with immersive visualization",
+        "implementation": {
+          "layout": "radial or force-directed",
+          "bloom": "UnrealBloomPass post-processing",
+          "auto_orbit": "camera auto-orbit for presentation",
+          "pause": "pauseAnimation — 冻结展示",
+          "metrics": "nodeVal大小表示评估分数"
+        }
+      }
+    ]
+  },
+
+  "sample_operation_data": {
+    "description": "示例作战方案数据 — 可直接用于3D Force Graph可视化",
+    "operation_name": "代号：雷霆行动",
+    "operation_plan": "敌军第5装甲师主力部署于A区域高地，我方计划从B方向实施侧翼突击，切断敌方补给线并完成包围歼灭",
+    "graph_data": {
+      "nodes": [
+        {"id": "i1", "category": "mission", "label": "我方任务目的", "detail": "歼灭敌军第5装甲师主力", "val": 10, "color": "#4a9eff"},
+        {"id": "i2", "category": "mission", "label": "阶段一：侧翼机动", "detail": "从B方向隐蔽接近敌方侧翼", "val": 8, "color": "#4a9eff"},
+        {"id": "i3", "category": "mission", "label": "阶段二：切断补给线", "detail": "占领C高地，切断敌方补给线", "val": 9, "color": "#4a9eff"},
+        {"id": "i4", "category": "mission", "label": "阶段三：包围歼灭", "detail": "合围敌军，完成歼灭", "val": 10, "color": "#4a9eff"},
+        {"id": "e1", "category": "enemy", "label": "敌军第5装甲师", "detail": "主力约300辆坦克，位于A区域", "val": 9, "color": "#f43f5e"},
+        {"id": "e2", "category": "enemy", "label": "敌军预备队", "detail": "约50辆坦克，待机于D区域", "val": 6, "color": "#f43f5e"},
+        {"id": "e3", "category": "enemy", "label": "敌方防空阵地", "detail": "中高空域覆盖", "val": 5, "color": "#f43f5e"},
+        {"id": "t1", "category": "terrain", "label": "A区域高地", "detail": "海拔450米，视野开阔", "val": 7, "color": "#34d399"},
+        {"id": "t2", "category": "terrain", "label": "B方向隐蔽路线", "detail": "森林遮蔽，适合隐蔽机动", "val": 8, "color": "#34d399"},
+        {"id": "t3", "category": "terrain", "label": "C高地", "detail": "战略要地，可俯瞰敌方补给线", "val": 9, "color": "#34d399"},
+        {"id": "w1", "category": "weather", "label": "天气预报", "detail": "明日多云，不利于空中支援", "val": 5, "color": "#fbbf24"},
+        {"id": "time1", "category": "time", "label": "发起时间窗口", "detail": "明晨0600-0800", "val": 6, "color": "#a78bfa"},
+        {"id": "r1", "category": "resource", "label": "我方主攻部队", "detail": "第1装甲团，200辆坦克", "val": 8, "color": "#f97316"},
+        {"id": "r2", "category": "resource", "label": "协同支援", "detail": "空军第7中队提供近距支援", "val": 7, "color": "#f97316"},
+        {"id": "risk1", "category": "risk", "label": "敌方预备队威胁", "detail": "可能从D区域增援", "val": 6, "color": "#f43f5e"}
+      ],
+      "links": [
+        {"source": "i1", "target": "i2", "type": "phase"},
+        {"source": "i2", "target": "i3", "type": "phase"},
+        {"source": "i3", "target": "i4", "type": "phase"},
+        {"source": "e1", "target": "i2", "type": "threat"},
+        {"source": "e2", "target": "i3", "type": "threat"},
+        {"source": "e3", "target": "r2", "type": "constraint"},
+        {"source": "t2", "target": "i2", "type": "enable"},
+        {"source": "t3", "target": "i3", "type": "enable"},
+        {"source": "w1", "target": "r2", "type": "constraint"},
+        {"source": "time1", "target": "i2", "type": "timing"},
+        {"source": "r1", "target": "i2", "type": "execute"},
+        {"source": "r1", "target": "i3", "type": "execute"},
+        {"source": "r1", "target": "i4", "type": "execute"},
+        {"source": "r2", "target": "i3", "type": "support"},
+        {"source": "risk1", "target": "i3", "type": "risk"}
+      ]
+    }
+  },
+
+  "simulation_state": {
+    "description": "仿真推演阶段的实时状态数据结构",
+    "forces": [
+      {"id": "red-force", "label": "红方（我军）", "color": "#e74c3c", "status": "active"},
+      {"id": "blue-force", "label": "蓝方（敌军）", "color": "#3498db", "status": "engaged"},
+      {"id": "neutral-zone", "label": "中立区", "color": "#95a5a6", "status": "contested"}
+    ],
+    "phases": [
+      {"id": "phase1", "label": "第一阶段：隐蔽机动", "progress": 100, "status": "completed"},
+      {"id": "phase2", "label": "第二阶段：切断补给", "progress": 73, "status": "active"},
+      {"id": "phase3", "label": "第三阶段：合围歼灭", "progress": 0, "status": "pending"}
+    ],
+    "metrics": {
+      "redWinProbability": 0.684,
+      "blueWinProbability": 0.316,
+      "redCasualties": 12,
+      "blueCasualties": 34,
+      "objectivesCaptured": 9,
+      "objectivesTotal": 12
+    },
+    "update_types": [
+      "unit_moved",
+      "unit_engaged",
+      "objective_captured",
+      "casualty_reported",
+      "weather_changed",
+      "reinforcement_arrived"
+    ]
+  },
+
+  "evaluation_metrics": {
+    "description": "效果评估阶段的评分指标体系",
+    "categories": [
+      {
+        "name": "作战效能",
+        "metrics": [
+          {"id": "m1", "label": "目标达成率", "value": 0.85, "weight": 0.25},
+          {"id": "m2", "label": "作战时间效率", "value": 0.72, "weight": 0.15},
+          {"id": "m3", "label": "火力运用效能", "value": 0.90, "weight": 0.20}
+        ]
+      },
+      {
+        "name": "资源消耗",
+        "metrics": [
+          {"id": "m4", "label": "人员伤亡率", "value": 0.15, "weight": 0.15},
+          {"id": "m5", "label": "装备损耗率", "value": 0.22, "weight": 0.10}
+        ]
+      },
+      {
+        "name": "风险控制",
+        "metrics": [
+          {"id": "m6", "label": "意外事件控制", "value": 0.68, "weight": 0.08},
+          {"id": "m7", "label": "应急预案有效性", "value": 0.75, "weight": 0.07}
+        ]
+      }
+    ],
+    "overall_score": 0.76,
+    "recommendation": "方案可行，建议执行。建议加强C高地防御以应对敌方预备队反扑。"
+  },
+
+  "react_implementation_notes": {
+    "description": "operation-commander React应用中3d-force-graph的使用说明",
+    "component_usage": {
+      "ForceGraph3DComponent": "位于 src/components/ForceGraph3DComponent.jsx，基于 three-forcegraph 实现",
+      "datasets": "位于 public/datasets/，包含 blocks.json, miserables.json, d3-dependencies.csv",
+      "routing": "基于 react-router-dom，6个节点页面 + Dashboard + Upload + SimulationRun"
+    },
+    "data_flow": {
+      "upload": "用户上传文本 → sessionStorage存储 → IntentUnderstanding页面读取",
+      "intent_understanding": "21项分析 → 生成图数据 → DAG可视化",
+      "situation_assessment": "态势评估 → 更新节点威胁等级 → Force Graph更新",
+      "simulation": "WebSocket推送 → graphData实时更新 → 状态着色",
+      "evaluation": "静态评估报告 → 高亮关键指标 → bloom渲染"
+    },
+    "performance_considerations": [
+      "大节点数时使用 forceEngine('ngraph')",
+      "使用 warmupTicks/cooldownTicks 预计算布局",
+      "仿真推演中适当降低 nodeResolution",
+      "paused状态下自动 pauseAnimation"
+    ]
+  },
+
+  "development_roadmap": {
+    "phase1": {
+      "name": "基础框架",
+      "tasks": [
+        "完成 React Router 路由配置",
+        "实现 ForceGraph3DComponent 组件",
+        "集成 miserables.json 和 blocks.json 数据集",
+        "实现6个节点的CoT页面基本框架"
+      ],
+      "status": "in_progress"
+    },
+    "phase2": {
+      "name": "意图理解可视化",
+      "tasks": [
+        "实现21项明确DAG布局",
+        "按类别自动着色节点",
+        "实现展开/折叠功能",
+        "添加详情面板（点击节点显示详情）"
+      ],
+      "status": "pending"
+    },
+    "phase3": {
+      "name": "仿真推演系统",
+      "tasks": [
+        "实现 WebSocket 实时更新",
+        "实现单位状态着色",
+        "添加推演控制面板（播放/暂停/快进）",
+        "实现推演进度条"
+      ],
+      "status": "pending"
+    },
+    "phase4": {
+      "name": "效果评估与优化",
+      "tasks": [
+        "实现 bloom 后处理效果",
+        "实现评估指标雷达图叠加",
+        "添加自动演示模式（camera orbit）",
+        "性能优化（ngraph引擎）"
+      ],
+      "status": "pending"
+    }
+  }
+}

@@ -1,0 +1,524 @@
+{
+  "metadata": {
+    "name": "3d-force-graph Vibe Coding Dataset",
+    "version": "1.0.0",
+    "description": "Comprehensive coding patterns, techniques, and use cases for 3d-force-graph library derived from source code analysis, GitHub examples, and best practices",
+    "generated": "2026-06-07",
+    "source": "https://github.com/vasturiano/3d-force-graph",
+    "tags": ["3d", "force-graph", "threejs", "webgl", "visualization", "d3", "react", "vibe-coding"]
+  },
+
+  "patterns": [
+    {
+      "id": "P001",
+      "name": "Basic Initialization",
+      "category": "initialization",
+      "description": "The simplest way to create a 3D force graph with random data",
+      "difficulty": "beginner",
+      "code_example": {
+        "language": "javascript",
+        "code": "import ForceGraph3D from '3d-force-graph';\n\nconst N = 300;\nconst gData = {\n  nodes: [...Array(N).keys()].map(i => ({ id: i })),\n  links: [...Array(N).keys()]\n    .filter(id => id)\n    .map(id => ({\n      source: id,\n      target: Math.round(Math.random() * (id - 1))\n    }))\n};\n\nconst Graph = new ForceGraph3D(document.getElementById('3d-graph'))\n  .graphData(gData);"
+      },
+      "use_case": "Quick prototyping and understanding the basic API",
+      "related_examples": ["basic"]
+    },
+    {
+      "id": "P002",
+      "name": "Orbit Camera Controls",
+      "category": "camera",
+      "description": "Switch from default trackball controls to orbit controls for smoother navigation",
+      "difficulty": "beginner",
+      "code_example": {
+        "language": "javascript",
+        "code": "const Graph = new ForceGraph3D(\n  document.getElementById('3d-graph'),\n  { controlType: 'orbit' }\n)\n  .jsonUrl('../datasets/miserables.json')\n  .nodeLabel('id')\n  .nodeAutoColorBy('group');"
+      },
+      "use_case": "Standard interactive 3D navigation (rotate, zoom, pan)",
+      "options": {
+        "controlType": ["trackball", "orbit", "fly"]
+      },
+      "related_examples": ["controls-orbit", "controls-fly"]
+    },
+    {
+      "id": "P003",
+      "name": "Auto-Coloring Nodes by Group",
+      "category": "styling",
+      "description": "Automatically assign colors to nodes based on a group/cluster attribute",
+      "difficulty": "beginner",
+      "code_example": {
+        "language": "javascript",
+        "code": "graph\n  .nodeAutoColorBy('group')\n  .nodeLabel(node => `${node.id} (Group ${node.group})`);\n\n// Nodes without a color attribute get auto-assigned colors\n// Nodes with existing color attribute keep their color"
+      },
+      "use_case": "Visual clustering of network entities (social networks, organizations)",
+      "related_examples": ["auto-colored", "basic"]
+    },
+    {
+      "id": "P004",
+      "name": "Directional Arrows on Links",
+      "category": "links",
+      "description": "Show directionality of relationships with arrow heads",
+      "difficulty": "beginner",
+      "code_example": {
+        "language": "javascript",
+        "code": "graph\n  .linkDirectionalArrowLength(4)\n  .linkDirectionalArrowColor(link => link.color || '#fff')\n  .linkDirectionalArrowRelPos(0.5)  // 0=near source, 1=near target\n  .linkDirectionalArrowResolution(8);"
+      },
+      "use_case": "Dependency graphs, flow diagrams, hierarchical relationships",
+      "related_examples": ["directional-links-arrows"]
+    },
+    {
+      "id": "P005",
+      "name": "Directional Moving Particles",
+      "category": "links",
+      "description": "Animated particles flowing along links to indicate direction and flow",
+      "difficulty": "intermediate",
+      "code_example": {
+        "language": "javascript",
+        "code": "graph\n  .linkDirectionalParticles(4)\n  .linkDirectionalParticleSpeed(0.02)  // fraction of link length per frame\n  .linkDirectionalParticleWidth(0.8)\n  .linkDirectionalParticleColor(link => link.color || '#00ffff')\n  .linkDirectionalParticleOffset(0);   // initial position offset [0-1]\n\n// For a single-shot particle effect:\ngraph.emitParticle(linkObject);"
+      },
+      "use_case": "Data flow visualization, packet routing, energy transfer",
+      "related_examples": ["directional-links-particles", "emit-particles"]
+    },
+    {
+      "id": "P006",
+      "name": "Curved Links with Self-References",
+      "category": "links",
+      "description": "Bezier-curved links, including loop-back self-references",
+      "difficulty": "intermediate",
+      "code_example": {
+        "language": "javascript",
+        "code": "graph.linkCurvature(link => {\n  if (link.source === link.target) return 2;  // self-loop radius\n  return 0.5;  // gentle curve (0=straight, 1=semicircle)\n});\n\n// Rotate the curve around the link axis:\ngraph.linkCurveRotation(link => Math.PI / 4);  // 45 degrees\n\n// Self-loops are rendered as rings around the node"
+      },
+      "use_case": "State machines, recursion visualization, self-referential data",
+      "related_examples": ["curved-links"]
+    },
+    {
+      "id": "P007",
+      "name": "Custom Node Geometry",
+      "category": "nodes",
+      "description": "Replace default spheres with custom ThreeJS 3D objects",
+      "difficulty": "intermediate",
+      "code_example": {
+        "language": "javascript",
+        "code": "import * as THREE from 'three';\n\ngraph.nodeThreeObject(node => {\n  if (node.type === 'star') {\n    const geo = new THREE.OctahedronGeometry(node.val * 2);\n    const mat = new THREE.MeshStandardMaterial({\n      color: node.color || 0x3498db,\n      flatShading: true\n    });\n    return new THREE.Mesh(geo, mat);\n  }\n  return null;  // fall back to default sphere\n});\n\n// Extend the default sphere instead of replacing:\ngraph.nodeThreeObjectExtend(true);\ngraph.nodeThreeObject(node => {\n  const sprite = new THREE.Sprite(\n    new THREE.SpriteMaterial({ color: node.color })\n  );\n  sprite.scale.set(4, 4, 1);\n  return sprite;\n});"
+      },
+      "use_case": "Entity type differentiation, brand logos, 3D icons",
+      "related_examples": ["custom-node-geometry", "text-nodes", "img-nodes"]
+    },
+    {
+      "id": "P008",
+      "name": "Camera Fly-to on Node Click",
+      "category": "interaction",
+      "description": "Animate camera to focus on a specific node when clicked",
+      "difficulty": "intermediate",
+      "code_example": {
+        "language": "javascript",
+        "code": "graph.onNodeClick((node, event) => {\n  const dist = 200;\n  graph.cameraPosition(\n    { x: node.x, y: node.y, z: node.z + dist },  // target camera position\n    { x: node.x, y: node.y, z: node.z },          // look-at target\n    800                                        // transition duration in ms\n  );\n});\n\n// Zoom to fit all nodes with padding:\ngraph.zoomToFit(1000, 50);  // 1s animation, 50px padding\n\n// With node filter:\ngraph.zoomToFit(1000, 20, node => node.group === selectedGroup);"
+      },
+      "use_case": "Drill-down navigation, node exploration, story-telling",
+      "related_examples": ["click-to-focus", "fit-to-canvas"]
+    },
+    {
+      "id": "P009",
+      "name": "Expand/Collapse Nodes",
+      "category": "data",
+      "description": "Dynamically add/remove child nodes when clicking a parent",
+      "difficulty": "intermediate",
+      "code_example": {
+        "language": "javascript",
+        "code": "let graphData = { nodes: rootNodes, links: [] };\n\nfunction toggleChildren(parentId) {\n  const parent = graphData.nodes.find(n => n.id === parentId);\n  if (!parent) return;\n\n  if (parent.expanded) {\n    // Collapse: remove children\n    const childIds = new Set(getChildIds(parentId));\n    graphData.nodes = graphData.nodes.filter(n => !childIds.has(n.id));\n    graphData.links = graphData.links.filter(l =>\n      !childIds.has(l.source.id) && !childIds.has(l.target.id)\n    );\n    parent.expanded = false;\n  } else {\n    // Expand: add children\n    const children = fetchChildren(parentId);\n    graphData.nodes.push(...children);\n    graphData.links.push(...children.map(c => ({\n      source: parentId, target: c.id\n    })));\n    parent.expanded = true;\n  }\n\n  graph.graphData(graphData);\n}\n\ngraph.onNodeClick(toggleChildren);"
+      },
+      "use_case": "File system browsers, org charts, knowledge graphs",
+      "related_examples": ["expandable-nodes", "dynamic"]
+    },
+    {
+      "id": "P010",
+      "name": "Fix Node Position After Drag",
+      "category": "interaction",
+      "description": "Lock nodes in place after user drags them",
+      "difficulty": "beginner",
+      "code_example": {
+        "language": "javascript",
+        "code": "// Option 1: Lock all nodes after drag ends\ngraph.onNodeDragEnd(node => {\n  node.fx = node.x;\n  node.fy = node.y;\n  node.fz = node.z;\n});\n\n// Option 2: Selective lock based on node property\ngraph.onNodeDragEnd(node => {\n  if (node.lockable) {\n    node.fx = node.x;\n    node.fy = node.y;\n    node.fz = node.z;\n  }\n});\n\n// Option 3: Let user choose by right-clicking after drag\ngraph.onNodeRightClick((node, event) => {\n  node.fx = node.x;\n  node.fy = node.y;\n  node.fz = node.z;\n});"
+      },
+      "use_case": "Custom layout editing, waypoint definition",
+      "related_examples": ["fix-dragged-nodes"]
+    },
+    {
+      "id": "P011",
+      "name": "DAG Hierarchical Layout",
+      "category": "layout",
+      "description": "Force-directed layout constrained to a directed acyclic graph hierarchy",
+      "difficulty": "intermediate",
+      "code_example": {
+        "language": "javascript",
+        "code": "graph\n  .dagMode('lr')   // left-to-right\n  // .dagMode('td')  // top-down\n  // .dagMode('bu')  // bottom-up\n  // .dagMode('rl')  // right-to-left\n  // .dagMode('zout') // near-to-far\n  // .dagMode('radialout') // outward radial\n  .dagLevelDistance(150)  // spacing between levels\n  .dagNodeFilter(node => node.depth > 0)  // exclude root\n  .onDagError(link => {\n    console.warn('Cycle detected:', link);\n    return true;  // return true to suppress error\n  });"
+      },
+      "use_case": "Dependency trees, git commit graphs, module hierarchies",
+      "related_examples": ["tree", "dag-yarn"]
+    },
+    {
+      "id": "P012",
+      "name": "Bloom Post-Processing Effect",
+      "category": "rendering",
+      "description": "Add glowing bloom effect for enhanced visual appeal",
+      "difficulty": "advanced",
+      "code_example": {
+        "language": "javascript",
+        "code": "import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';\nimport { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';\nimport { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';\nimport * as THREE from 'three';\n\nconst composer = graph.postProcessingComposer();\n\nconst bloomPass = new UnrealBloomPass(\n  new THREE.Vector2(window.innerWidth, window.innerHeight),\n  1.5,   // bloom strength\n  0.4,   // radius\n  0.85   // luminance threshold\n);\ncomposer.addPass(bloomPass);\n\n// Make nodes glow by increasing emissive:\ngraph.nodeThreeObject(node => {\n  const geo = new THREE.SphereGeometry(node.val * 2);\n  const mat = new THREE.MeshStandardMaterial({\n    color: node.color,\n    emissive: node.color,\n    emissiveIntensity: 0.8\n  });\n  return new THREE.Mesh(geo, mat);\n});"
+      },
+      "use_case": "Gaming, sci-fi UIs, neural network visualization",
+      "related_examples": ["bloom-effect"]
+    },
+    {
+      "id": "P013",
+      "name": "Highlight Connected Subgraph on Hover",
+      "category": "interaction",
+      "description": "Dim unrelated nodes/links when hovering over a node",
+      "difficulty": "intermediate",
+      "code_example": {
+        "language": "javascript",
+        "code": "const dims = { nodes: 0.1, links: 0.05 };\nconst normal = { nodes: 0.75, links: 0.2 };\n\ngraph.onNodeHover(node => {\n  if (!node) {\n    graph.nodeOpacity(normal.nodes).linkOpacity(normal.links);\n    return;\n  }\n\n  const connectedIds = new Set();\n  graph.graphData().links.forEach(l => {\n    const src = l.source.id || l.source;\n    const tgt = l.target.id || l.target;\n    if (src === node.id || tgt === node.id) {\n      connectedIds.add(src).add(tgt);\n    }\n  });\n\n  graph.nodeOpacity(n =>\n    n.id === node.id || connectedIds.has(n.id) ? 1 : dims.nodes\n  ).linkOpacity(l => {\n    const src = l.source.id || l.source;\n    const tgt = l.target.id || l.target;\n    return (src === node.id || tgt === node.id) ? 0.8 : dims.links;\n  });\n});"
+      },
+      "use_case": "Network analysis, relationship exploration",
+      "related_examples": ["highlight", "multi-selection"]
+    },
+    {
+      "id": "P014",
+      "name": "Live WebSocket Updates",
+      "category": "data",
+      "description": "Real-time graph updates via WebSocket connection",
+      "difficulty": "intermediate",
+      "code_example": {
+        "language": "javascript",
+        "code": "let graphData = { nodes: [], links: [] };\nconst ws = new WebSocket('wss://stream.example.com/graph');\n\nws.onmessage = ({ data }) => {\n  const update = JSON.parse(data);\n\n  switch (update.type) {\n    case 'node_added':\n      graphData.nodes.push(update.node);\n      break;\n    case 'node_removed':\n      graphData.nodes = graphData.nodes.filter(n => n.id !== update.id);\n      graphData.links = graphData.links.filter(l =>\n        (l.source.id || l.source) !== update.id &&\n        (l.target.id || l.target) !== update.id\n      );\n      break;\n    case 'link_added':\n      graphData.links.push(update.link);\n      break;\n    case 'bulk_sync':\n      graphData = update.data;\n      break;\n  }\n\n  graph.graphData(graphData);\n};"
+      },
+      "use_case": "Real-time monitoring, live collaboration, IoT sensor networks"
+    },
+    {
+      "id": "P015",
+      "name": "Custom D3 Forces",
+      "category": "physics",
+      "description": "Fine-tune the physics simulation with custom force parameters",
+      "difficulty": "advanced",
+      "code_example": {
+        "language": "javascript",
+        "code": "graph\n  .forceEngine('d3')\n  .d3AlphaDecay(0.0228)      // convergence speed (lower = slower, more stable)\n  .d3VelocityDecay(0.4)      // friction (higher = more dampening)\n  .d3AlphaMin(0);             // minimum alpha (0 = run forever)\n\n// Custom force parameters\ngraph.d3Force('charge', d3.forceManyBody()\n  .strength(-120)    // repulsion strength (negative = repel)\n  .distanceMax(300)  // max interaction distance\n  .theta(0.9)       // Barnes-Hut approximation\n);\n\ngraph.d3Force('link', d3.forceLink()\n  .id(d => d.id)\n  .distance(80)      // ideal link length\n  .strength(0.3)     // force strength\n);\n\ngraph.d3Force('collision', d3.forceCollide()\n  .radius(d => Math.sqrt(d.val) * 4 + 2)\n  .strength(0.7)\n);"
+      },
+      "use_case": "Fine-grained control over graph layout, custom physics",
+      "related_examples": ["collision-detection", "manipulate-link-force"]
+    },
+    {
+      "id": "P016",
+      "name": "Pause/Resume Animation",
+      "category": "rendering",
+      "description": "Toggle rendering for performance or interaction reasons",
+      "difficulty": "beginner",
+      "code_example": {
+        "language": "javascript",
+        "code": "// Pause rendering (freezes view, cancels interaction)\ngraph.pauseAnimation();\n\n// Resume rendering\ngraph.resumeAnimation();\n\n// Toggle button\ndocument.getElementById('pause-btn').addEventListener('click', () => {\n  if (graph._pauseAnimation) {\n    graph.resumeAnimation();\n  } else {\n    graph.pauseAnimation();\n  }\n});\n\n// Auto-pause when tab is hidden\ndocument.addEventListener('visibilitychange', () => {\n  if (document.hidden) {\n    graph.pauseAnimation();\n  } else {\n    graph.resumeAnimation();\n  }\n});"
+      },
+      "use_case": "Save battery, reduce CPU when graph is not visible",
+      "related_examples": ["pause-resume"]
+    },
+    {
+      "id": "P017",
+      "name": "External Scene Objects",
+      "category": "rendering",
+      "description": "Add ThreeJS objects to the scene alongside the graph",
+      "difficulty": "intermediate",
+      "code_example": {
+        "language": "javascript",
+        "code": "import * as THREE from 'three';\n\nconst scene = graph.scene();\n\n// Ground plane\nconst groundGeo = new THREE.PlaneGeometry(1000, 1000);\nconst groundMat = new THREE.MeshStandardMaterial({\n  color: 0x1a1a1a, side: THREE.DoubleSide\n});\nconst ground = new THREE.Mesh(groundGeo, groundMat);\nground.rotation.x = Math.PI / 2;\nground.position.y = -100;\nscene.add(ground);\n\n// Starfield background\nconst starsGeo = new THREE.BufferGeometry();\nconst positions = new Float32Array(3000);\nfor (let i = 0; i < 3000; i += 3) {\n  positions[i] = (Math.random() - 0.5) * 3000;\n  positions[i+1] = (Math.random() - 0.5) * 3000;\n  positions[i+2] = (Math.random() - 0.5) * 3000;\n}\nstarsGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));\nconst starsMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.7 });\nscene.add(new THREE.Points(starsGeo, starsMat));\n\n// Dynamic light that follows a node\nconst pointLight = new THREE.PointLight(0xffd700, 1, 200);\nscene.add(pointLight);\ngraph.onNodeClick(node => {\n  pointLight.position.set(node.x, node.y, node.z);\n});"
+      },
+      "use_case": "Context-specific environments, immersive 3D scenes",
+      "related_examples": ["scene"]
+    },
+    {
+      "id": "P018",
+      "name": "Gradient/Textured Links",
+      "category": "links",
+      "description": "Create gradient or custom material links between nodes",
+      "difficulty": "advanced",
+      "code_example": {
+        "language": "javascript",
+        "code": "import * as THREE from 'three';\n\ngraph.linkMaterial(link => {\n  const src = link.source;\n  const tgt = link.target;\n\n  const canvas = document.createElement('canvas');\n  canvas.width = 256;\n  canvas.height = 1;\n  const ctx = canvas.getContext('2d');\n  const gradient = ctx.createLinearGradient(0, 0, 256, 0);\n  gradient.addColorStop(0, src.color || '#ff0000');\n  gradient.addColorStop(1, tgt.color || '#0000ff');\n  ctx.fillStyle = gradient;\n  ctx.fillRect(0, 0, 256, 1);\n\n  const texture = new THREE.CanvasTexture(canvas);\n  return new THREE.MeshBasicMaterial({\n    map: texture,\n    transparent: true,\n    opacity: 0.8\n  });\n});\n\n// Or with MeshStandardMaterial for lighting:\ngraph.linkThreeObject(link => {\n  const curve = new THREE.LineCurve3(\n    new THREE.Vector3(link.source.x, link.source.y, link.source.z),\n    new THREE.Vector3(link.target.x, link.target.y, link.target.z)\n  );\n  const geo = new THREE.TubeGeometry(curve, 20, 0.5, 8, false);\n  const mat = new THREE.MeshStandardMaterial({\n    color: link.color || '#888',\n    metalness: 0.5,\n    roughness: 0.3\n  });\n  return new THREE.Mesh(geo, mat);\n});"
+      },
+      "use_case": "Color-coded relationships, energy flow, weighted connections",
+      "related_examples": ["gradient-links", "text-links"]
+    },
+    {
+      "id": "P019",
+      "name": "Performance Optimization for Large Graphs",
+      "category": "performance",
+      "description": "Techniques for rendering 10k+ node graphs smoothly",
+      "difficulty": "advanced",
+      "code_example": {
+        "language": "javascript",
+        "code": "// 1. Use ngraph physics engine (better performance)\ngraph.forceEngine('ngraph');\n\n// 2. Reduce node geometry resolution\ngraph.nodeResolution(4);  // default is 8\n\n// 3. Use Line rendering for links (no 3D geometry)\ngraph.linkWidth(0);  // 0 = Line (always 1px), >0 = 3D cylinder\n\n// 4. Disable pointer interaction\ngraph.enablePointerInteraction(false);\n\n// 5. Pre-compute layout\ngraph\n  .warmupTicks(300)     // dry-run before rendering\n  .cooldownTicks(300)   // freeze after settling\n  .onEngineStop(() => {\n    graph.cooldownTicks(Infinity);  // unfreeze for interaction\n  });\n\n// 6. Level-of-detail visibility\ngraph.nodeVisibility(node => {\n  const camDist = Math.hypot(\n    graph.camera().position.x - node.x,\n    graph.camera().position.y - node.y,\n    graph.camera().position.z - node.z\n  );\n  return node.val > 3 || camDist < 1000;\n});\n\n// 7. Reduce particle count\ngraph.linkDirectionalParticles(2);"
+      },
+      "use_case": "Enterprise networks, social graphs, knowledge bases"
+    },
+    {
+      "id": "P020",
+      "name": "React Integration with State Management",
+      "category": "react",
+      "description": "Use 3d-force-graph in a React app with state management",
+      "difficulty": "intermediate",
+      "code_example": {
+        "language": "jsx",
+        "code": "import { useEffect, useRef, useState, useCallback } from 'react';\nimport ForceGraph3D from 'three-forcegraph';\nimport * as THREE from 'three';\n\nexport default function GraphViewer({ initialData }) {\n  const containerRef = useRef(null);\n  const graphRef = useRef(null);\n  const [selected, setSelected] = useState(null);\n  const [dims, setDims] = useState({\n    width: window.innerWidth,\n    height: window.innerHeight\n  });\n\n  // Handle window resize\n  useEffect(() => {\n    const handle = () => setDims({\n      width: window.innerWidth,\n      height: window.innerHeight\n    });\n    window.addEventListener('resize', handle);\n    return () => window.removeEventListener('resize', handle);\n  }, []);\n\n  // Initialize graph\n  useEffect(() => {\n    if (!containerRef.current) return;\n\n    const graph = ForceGraph3D({ three: THREE, width: dims.width, height: dims.height })(\n      containerRef.current\n    );\n    graphRef.current = graph;\n\n    graph\n      .backgroundColor('#0d1117')\n      .nodeAutoColorBy('group')\n      .nodeLabel(d => d.name || d.id)\n      .onNodeClick(setSelected);\n\n    if (initialData) graph.graphData(initialData);\n\n    return () => graph._destructor();\n  }, [dims]);\n\n  return (\n    <div style={{ position: 'relative' }}>\n      <div ref={containerRef} />\n      {selected && (\n        <NodePanel node={selected} onClose={() => setSelected(null)} />\n      )}\n    </div>\n  );\n}"
+      },
+      "use_case": "React-based dashboards, data exploration tools"
+    },
+    {
+      "id": "P021",
+      "name": "Context Menu on Right-Click",
+      "category": "interaction",
+      "description": "Implement custom right-click context menus for nodes and links",
+      "difficulty": "intermediate",
+      "code_example": {
+        "language": "javascript",
+        "code": "const menu = document.createElement('div');\nmenu.style.cssText = `\n  position: fixed; background: #1a1a1a; color: #fff;\n  padding: 8px 0; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);\n  min-width: 160px; z-index: 1000; display: none;\n`;\ndocument.body.appendChild(menu);\n\nfunction showMenu(items, x, y) {\n  menu.innerHTML = items.map(item => `\n    <div style=\"padding: 8px 16px; cursor: pointer;\"\n         onmouseover=\"this.style.background='#333'\"\n         onmouseout=\"this.style.background='transparent'\"\n         onclick=\"${item.onClick}\">\n      ${item.label}\n    </div>\n  `).join('');\n  menu.style.left = x + 'px';\n  menu.style.top = y + 'px';\n  menu.style.display = 'block';\n}\n\nfunction hideMenu() {\n  menu.style.display = 'none';\n}\n\ngraph.onNodeRightClick((node, event) => {\n  event.preventDefault();\n  showMenu([\n    { label: 'Focus Camera', onClick: `focusNode('${node.id}')` },\n    { label: 'Lock Position', onClick: `lockNode('${node.id}')` },\n    { label: 'Expand Children', onClick: `expandNode('${node.id}')` },\n    { label: 'Delete Node', onClick: `deleteNode('${node.id}')` }\n  ], event.clientX, event.clientY);\n});\n\ndocument.addEventListener('click', hideMenu);"
+      },
+      "use_case": "Graph editing tools, administrative dashboards"
+    },
+    {
+      "id": "P022",
+      "name": "Camera Auto-Orbit",
+      "category": "camera",
+      "description": "Automatically orbit the camera around the graph center",
+      "difficulty": "beginner",
+      "code_example": {
+        "language": "javascript",
+        "code": "let angle = 0;\nconst radius = 1000;\nconst height = 500;\nconst speed = 0.001;\n\nfunction animate() {\n  angle += speed;\n  graph.cameraPosition({\n    x: Math.sin(angle) * radius,\n    y: height,\n    z: Math.cos(angle) * radius\n  });\n  requestAnimationFrame(animate);\n}\n\n// Start auto-orbit on button click\ndocument.getElementById('orbit-btn').addEventListener('click', () => {\n  animate();\n});\n\n// Or using ThreeJS clock:\nimport { Clock } from 'three';\nconst clock = new Clock();\n\ngraph.onEngineTick(() => {\n  const t = clock.getElapsedTime();\n  graph.cameraPosition({\n    x: Math.sin(t * 0.2) * radius,\n    y: Math.sin(t * 0.1) * height + height,\n    z: Math.cos(t * 0.2) * radius\n  });\n});"
+      },
+      "use_case": "Demo presentations, automatic exploration, screensaver mode",
+      "related_examples": ["camera-auto-orbit"]
+    }
+  ],
+
+  "techniques": [
+    {
+      "id": "T001",
+      "name": "Data Schema Transformation",
+      "category": "data-processing",
+      "description": "Convert various data formats into 3d-force-graph compatible format",
+      "examples": [
+        {
+          "input_format": "adjacency-list",
+          "code": "const toGraphData = (adjList) => {\n  const nodes = Object.keys(adjList).map(id => ({ id }));\n  const links = [];\n  Object.entries(adjList).forEach(([source, targets]) => {\n    targets.forEach(target => {\n      links.push({ source, target });\n    });\n  });\n  return { nodes, links };\n};"
+        },
+        {
+          "input_format": "csv",
+          "code": "const csvToGraphData = (rows) => {\n  const nodes = [], links = [], seen = {};\n  rows.forEach(({ size, path }) => {\n    nodes.push({ id: path, size: +size || 0, path });\n    const parts = path.split('/');\n    if (parts.length > 1) {\n      const parent = parts.slice(0, -1).join('/');\n      links.push({ source: parent || 'd3', target: path });\n    }\n  });\n  return { nodes, links };\n};"
+        },
+        {
+          "input_format": "edges-only",
+          "code": "const edgesToGraphData = (edges) => {\n  const nodeMap = {};\n  edges.forEach(({ source, target }) => {\n    nodeMap[source] = true;\n    nodeMap[target] = true;\n  });\n  return {\n    nodes: Object.keys(nodeMap).map(id => ({ id })),\n    links: edges\n  };\n};"
+        }
+      ]
+    },
+    {
+      "id": "T002",
+      "name": "Coordinate Space Conversion",
+      "category": "utilities",
+      "description": "Convert between 3D graph coordinates and 2D screen coordinates",
+      "examples": [
+        {
+          "name": "Screen to graph",
+          "code": "// Place a DOM element at a node's screen position\nconst onNodeClick = (node) => {\n  const screen = graph.graph2ScreenCoords(node.x, node.y, node.z);\n  tooltip.style.left = screen.x + 'px';\n  tooltip.style.top = screen.y + 'px';\n};"
+        },
+        {
+          "name": "Graph to screen",
+          "code": "// Place 3D object at graph coordinates from screen click\ncanvas.addEventListener('click', (e) => {\n  const rect = canvas.getBoundingClientRect();\n  const graphPos = graph.screen2GraphCoords(\n    e.clientX - rect.left,\n    e.clientY - rect.top,\n    0  // distance from camera\n  );\n  addMarker(graphPos.x, graphPos.y, graphPos.z);\n});"
+        }
+      ]
+    },
+    {
+      "id": "T003",
+      "name": "Simulation Lifecycle Management",
+      "category": "physics",
+      "description": "Control the force simulation lifecycle with warmup, cooldown, and callbacks",
+      "examples": [
+        {
+          "name": "Warmup then freeze",
+          "code": "graph\n  .warmupTicks(500)      // compute 500 ticks silently\n  .cooldownTicks(500)    // render 500 ticks then freeze\n  .onEngineStop(() => {\n    console.log('Layout stabilized');\n    // Enable interaction, show UI, etc.\n  });"
+        },
+        {
+          "name": "Time-based cooldown",
+          "code": "graph\n  .cooldownTime(30000)   // freeze after 30 seconds\n  .onEngineStop(() => {\n    console.log('Done in 30s');\n  });"
+        },
+        {
+          "name": "Per-tick monitoring",
+          "code": "let tickCount = 0;\ngraph\n  .onEngineTick(() => {\n    tickCount++;\n    if (tickCount % 100 === 0) {\n      console.log(`Tick ${tickCount}, alpha: ${graph.d3Alpha()}`);\n    }\n  });"
+        }
+      ]
+    },
+    {
+      "id": "T004",
+      "name": "Dynamic Styling Based on State",
+      "category": "styling",
+      "description": "Apply styles that react to node/link state changes",
+      "examples": [
+        {
+          "name": "Size by connectivity",
+          "code": "const linkCounts = {};\ngraph.graphData().links.forEach(l => {\n  const src = l.source.id || l.source;\n  const tgt = l.target.id || l.target;\n  linkCounts[src] = (linkCounts[src] || 0) + 1;\n  linkCounts[tgt] = (linkCounts[tgt] || 0) + 1;\n});\n\ngraph.nodeVal(node => (linkCounts[node.id] || 0) * 2 + 5);"
+        },
+        {
+          "name": "Color by centrality",
+          "code": "// Betweenness centrality approximation\nconst centrality = computeCentrality(graph.graphData());\nconst maxC = Math.max(...Object.values(centrality));\n\ngraph.nodeColor(node => {\n  const c = centrality[node.id] / maxC;\n  return `hsl(${200 - c * 200}, 80%, 50%)`;\n}).nodeVal(node => centrality[node.id] * 10 + 3);"
+        },
+        {
+          "name": "Animated pulse for selected",
+          "code": "let selectedId = null;\nlet pulse = 0;\n\ngraph.onNodeClick(node => { selectedId = node.id; });\n\ngraph.nodeThreeObject(node => {\n  const geo = new THREE.SphereGeometry(node.val * 2);\n  const mat = new THREE.MeshStandardMaterial({\n    color: node.id === selectedId ? 0xff0000 : node.color,\n    emissive: node.id === selectedId ? 0xff0000 : 0x000000,\n    emissiveIntensity: node.id === selectedId ? Math.sin(pulse) * 0.5 + 0.5 : 0\n  });\n  return new THREE.Mesh(geo, mat);\n});\n\ngraph.onEngineTick(() => { pulse += 0.1; graph.refresh(); });"
+        }
+      ]
+    }
+  ],
+
+  "use_cases": [
+    {
+      "id": "UC001",
+      "name": "Social Network Visualization",
+      "description": "Visualize connections between people in a social network",
+      "features_used": ["nodeAutoColorBy", "nodeLabel", "onNodeClick", "onNodeHover", "highlight-on-hover"],
+      "data_schema": {
+        "nodes": { "id": "string", "name": "string", "avatar": "string", "group": "number", "followers": "number" },
+        "links": { "source": "string", "target": "string", "type": "string", "weight": "number" }
+      },
+      "code_snippet": "graph.nodeVal(n => Math.sqrt(n.followers) * 0.5).nodeAutoColorBy('group').onNodeHover(highlightConnected);"
+    },
+    {
+      "id": "UC002",
+      "name": "Software Dependency Graph",
+      "description": "Visualize package/module dependencies in a codebase",
+      "features_used": ["dagMode", "nodeThreeObject", "linkDirectionalArrowLength", "linkDirectionalParticles"],
+      "data_schema": {
+        "nodes": { "id": "string", "name": "string", "type": "enum(module|library|file)", "size": "number" },
+        "links": { "source": "string", "target": "string" }
+      },
+      "code_snippet": "graph.dagMode('lr').dagLevelDistance(100).nodeThreeObject(n => n.type === 'file' ? boxGeometry() : null);"
+    },
+    {
+      "id": "UC003",
+      "name": "Knowledge Graph Explorer",
+      "description": "Interactive knowledge graph with entity types and relationships",
+      "features_used": ["expand-on-click", "camera-focus", "custom-node-geometry", "dynamic-data"],
+      "data_schema": {
+        "nodes": { "id": "string", "label": "string", "type": "enum(person|org|concept|location)", "description": "string" },
+        "links": { "source": "string", "target": "string", "relation": "string" }
+      },
+      "code_snippet": "graph.onNodeClick(expandNode).nodeThreeObject(node => getIconForType(node.type)).nodeLabel(n => n.label + ': ' + n.description);"
+    },
+    {
+      "id": "UC004",
+      "name": "Real-Time Monitoring Dashboard",
+      "description": "Live-updating graph showing system health and service connections",
+      "features_used": ["websocket-updates", "node-color-by-status", "bloom-effect", "pause-resume"],
+      "data_schema": {
+        "nodes": { "id": "string", "name": "string", "status": "enum(healthy|degraded|down)", "metric": "number" },
+        "links": { "source": "string", "target": "string", "latency": "number" }
+      },
+      "code_snippet": "ws.onmessage = ({data}) => graph.graphData(data).nodeColor(n => STATUS_COLORS[n.status]).linkColor(l => l.latency > 100 ? '#ff0' : '#0f0');"
+    },
+    {
+      "id": "UC005",
+      "name": "3D Network Topology Map",
+      "description": "Visualize network infrastructure (servers, routers, devices)",
+      "features_used": ["custom-node-geometry", "external-scene-objects", "camera-fly", "node-drag"],
+      "data_schema": {
+        "nodes": { "id": "string", "role": "enum(server|router|switch|endpoint)", "x": "number", "y": "number", "z": "number", "ip": "string" },
+        "links": { "source": "string", "target": "string", "bandwidth": "number" }
+      },
+      "code_snippet": "graph.nodeThreeObject(n => DEVICE_GEOMETRIES[n.role]).nodePositionUpdate((obj, coords) => { obj.position.set(coords.x, coords.y, coords.z); return true; });"
+    }
+  ],
+
+  "troubleshooting": [
+    {
+      "symptom": "Nodes invisible or extremely small",
+      "causes": ["node val is 0 or negative", "camera positioned inside nodes", "node opacity is 0"],
+      "solutions": [
+        "Set nodeVal(node => node.value || 1)",
+        "Move camera further: graph.cameraPosition({ z: 1000 })",
+        "Set nodeOpacity(1) to check visibility"
+      ]
+    },
+    {
+      "symptom": "Links not rendering",
+      "causes": ["link visibility is false", "link width is 0 with no source/target geometry", "nodes are at exact same position"],
+      "solutions": [
+        "Check linkWidth: 0 = Line, >0 = Cylinder",
+        "Verify source/target node IDs resolve correctly",
+        "Use linkLabel to verify links exist"
+      ]
+    },
+    {
+      "symptom": "Node drag doesn't work",
+      "causes": ["Using ngraph engine (no programmatic node access)", "enableNodeDrag is false", "enablePointerInteraction is false"],
+      "solutions": [
+        "Switch to d3: graph.forceEngine('d3')",
+        "Set graph.enableNodeDrag(true)",
+        "Set graph.enablePointerInteraction(true)"
+      ]
+    },
+    {
+      "symptom": "DAG mode throws 'cycle detected'",
+      "causes": ["Graph contains cycles", "self-referential links"],
+      "solutions": [
+        "Use dagNodeFilter to exclude problematic nodes",
+        "Handle onDagError callback to suppress",
+        "Use onDagError to find and fix cycles in data"
+      ]
+    },
+    {
+      "symptom": "Memory leak on React re-mount",
+      "causes": ["Missing cleanup in useEffect", "Multiple animation loops running"],
+      "solutions": [
+        "Always call graph._destructor() in useEffect cleanup",
+        "Check containerRef.current is not null before cleanup",
+        "Remove event listeners"
+      ]
+    },
+    {
+      "symptom": "Poor performance with large graphs (10k+ nodes)",
+      "causes": ["Too many geometries", "Pointer tracking overhead", "Physics simulation too heavy"],
+      "solutions": [
+        "Use forceEngine('ngraph')",
+        "Reduce nodeResolution to 4",
+        "Set enablePointerInteraction(false)",
+        "Use warmupTicks + cooldownTicks to pre-compute layout"
+      ]
+    },
+    {
+      "symptom": "Arrows pointing wrong direction",
+      "causes": ["source/target IDs not matching", "linkSource/linkTarget accessors incorrect"],
+      "solutions": [
+        "Verify graph.nodeId() matches actual node ID field",
+        "Check graph.linkSource() / linkTarget() accessors",
+        "Data may have source/target as objects instead of IDs"
+      ]
+    }
+  ],
+
+  "migration_guide": {
+    "from_2d": {
+      "description": "Migrating from force-graph (2D) to 3d-force-graph",
+      "changes": [
+        "Import changes from 'force-graph' to '3d-force-graph'",
+        "Add controlType: 'orbit' option for smoother camera",
+        "3D introduces z-axis: consider nodePositionUpdate for planar data",
+        "nodeThreeObject accepts THREE.Object3D instead of Canvas 2D context",
+        "cameraPosition() takes {x, y, z} instead of {x, y}"
+      ]
+    },
+    "from_v1_to_v2": {
+      "description": "Upgrading 3d-force-graph major versions",
+      "changes": [
+        "v2 requires ThreeJS >= 0.179 (check peer dependencies)",
+        "postProcessingComposer API unchanged",
+        "React integration now uses react-force-graph package",
+        "All accessor functions now support function, string, and constant values uniformly"
+      ]
+    }
+  }
+}
