@@ -1,0 +1,73 @@
+{
+  "nodes": [
+    { "id": "标准攻防战", "group": 0, "type": "center", "description": "作战计划总览", "x": 0, "y": 0, "z": 0, "fx": 0, "fy": 0, "fz": 0 },
+
+    { "id": "分析研判", "group": 1, "type": "aod", "description": "输入理解", "x": 0, "y": 30, "z": 0, "fx": 0, "fy": 30, "fz": 0 },
+    { "id": "上级指令解析", "group": 1, "description": "上级指令解析", "x": -15, "y": 50, "z": 0, "fx": -15, "fy": 50, "fz": 0 },
+    { "id": "敌方企图研判", "group": 1, "description": "敌方企图研判", "x": 0, "y": 55, "z": 5, "fx": 0, "fy": 55, "fz": 5 },
+    { "id": "我方能力评估", "group": 1, "description": "我方能力评估", "x": 15, "y": 50, "z": 0, "fx": 15, "fy": 50, "fz": 0 },
+    { "id": "时间窗口计算", "group": 1, "description": "时间窗口计算", "x": 0, "y": 50, "z": -8, "fx": 0, "fy": 50, "fz": -8 },
+
+    { "id": "方案生成", "group": 2, "type": "aod", "description": "分析判断", "x": 26, "y": 15, "z": 0, "fx": 26, "fy": 15, "fz": 0 },
+    { "id": "方案A-正面强攻", "group": 2, "description": "方案A-正面强攻", "x": 40, "y": 30, "z": 5, "fx": 40, "fy": 30, "fz": 5 },
+    { "id": "方案B-侧翼迂回", "group": 2, "description": "方案B-侧翼迂回", "x": 45, "y": 15, "z": 0, "fx": 45, "fy": 15, "fz": 0 },
+    { "id": "方案C-综合打击", "group": 2, "description": "方案C-综合打击", "x": 40, "y": 0, "z": -5, "fx": 40, "fy": 0, "fz": -5 },
+
+    { "id": "计划制定", "group": 3, "type": "aod", "description": "规划生成", "x": 26, "y": -15, "z": 0, "fx": 26, "fy": -15, "fz": 0 },
+    { "id": "阶段一-先期电子压制", "group": 3, "description": "阶段一-先期电子压制", "x": 40, "y": -30, "z": 5, "fx": 40, "fy": -30, "fz": 5 },
+    { "id": "阶段二-主力正面突击", "group": 3, "description": "阶段二-主力正面突击", "x": 45, "y": -15, "z": 0, "fx": 45, "fy": -15, "fz": 0 },
+    { "id": "阶段三-纵深穿插", "group": 3, "description": "阶段三-纵深穿插", "x": 40, "y": 0, "z": 5, "fx": 40, "fy": 0, "fz": 5 },
+    { "id": "阶段四-稳固撤离", "group": 3, "description": "阶段四-稳固撤离", "x": 40, "y": -5, "z": -8, "fx": 40, "fy": -5, "fz": -8 },
+
+    { "id": "执行控制", "group": 4, "type": "aod", "description": "执行控制", "x": 0, "y": -30, "z": 0, "fx": 0, "fy": -30, "fz": 0 },
+    { "id": "火力协调", "group": 4, "description": "火力协调", "x": -15, "y": -50, "z": 0, "fx": -15, "fy": -50, "fz": 0 },
+    { "id": "机动指挥", "group": 4, "description": "机动指挥", "x": 0, "y": -55, "z": 5, "fx": 0, "fy": -55, "fz": 5 },
+    { "id": "通信保障", "group": 4, "description": "通信保障", "x": 15, "y": -50, "z": 0, "fx": 15, "fy": -50, "fz": 0 },
+    { "id": "后勤支援", "group": 4, "description": "后勤支援", "x": 0, "y": -50, "z": -8, "fx": 0, "fy": -50, "fz": -8 },
+
+    { "id": "仿真推演", "group": 5, "type": "aod", "description": "反馈适应", "x": -26, "y": -15, "z": 0, "fx": -26, "fy": -15, "fz": 0 },
+    { "id": "红方胜率预测", "group": 5, "description": "红方胜率预测", "x": -40, "y": -30, "z": 5, "fx": -40, "fy": -30, "fz": 5 },
+    { "id": "蓝方反应模拟", "group": 5, "description": "蓝方反应模拟", "x": -45, "y": -15, "z": 0, "fx": -45, "fy": -15, "fz": 0 },
+    { "id": "风险点识别", "group": 5, "description": "风险点识别", "x": -40, "y": 0, "z": -5, "fx": -40, "fy": 0, "fz": -5 },
+
+    { "id": "效果评估", "group": 6, "type": "aod", "description": "复盘优化", "x": -26, "y": 15, "z": 0, "fx": -26, "fy": 15, "fz": 0 },
+    { "id": "任务完成率", "group": 6, "description": "任务完成率", "x": -40, "y": 30, "z": 5, "fx": -40, "fy": 30, "fz": 5 },
+    { "id": "己方伤亡预估", "group": 6, "description": "己方伤亡预估", "x": -45, "y": 15, "z": 0, "fx": -45, "fy": 15, "fz": 0 },
+    { "id": "敌方毁伤评估", "group": 6, "description": "敌方毁伤评估", "x": -40, "y": 0, "z": -5, "fx": -40, "fy": 0, "fz": -5 }
+  ],
+  "links": [
+    { "source": "标准攻防战", "target": "分析研判" },
+    { "source": "标准攻防战", "target": "方案生成" },
+    { "source": "标准攻防战", "target": "计划制定" },
+    { "source": "标准攻防战", "target": "执行控制" },
+    { "source": "标准攻防战", "target": "仿真推演" },
+    { "source": "标准攻防战", "target": "效果评估" },
+
+    { "source": "分析研判", "target": "上级指令解析" },
+    { "source": "分析研判", "target": "敌方企图研判" },
+    { "source": "分析研判", "target": "我方能力评估" },
+    { "source": "分析研判", "target": "时间窗口计算" },
+
+    { "source": "方案生成", "target": "方案A-正面强攻" },
+    { "source": "方案生成", "target": "方案B-侧翼迂回" },
+    { "source": "方案生成", "target": "方案C-综合打击" },
+
+    { "source": "计划制定", "target": "阶段一-先期电子压制" },
+    { "source": "计划制定", "target": "阶段二-主力正面突击" },
+    { "source": "计划制定", "target": "阶段三-纵深穿插" },
+    { "source": "计划制定", "target": "阶段四-稳固撤离" },
+
+    { "source": "执行控制", "target": "火力协调" },
+    { "source": "执行控制", "target": "机动指挥" },
+    { "source": "执行控制", "target": "通信保障" },
+    { "source": "执行控制", "target": "后勤支援" },
+
+    { "source": "仿真推演", "target": "红方胜率预测" },
+    { "source": "仿真推演", "target": "蓝方反应模拟" },
+    { "source": "仿真推演", "target": "风险点识别" },
+
+    { "source": "效果评估", "target": "任务完成率" },
+    { "source": "效果评估", "target": "己方伤亡预估" },
+    { "source": "效果评估", "target": "敌方毁伤评估" }
+  ]
+}

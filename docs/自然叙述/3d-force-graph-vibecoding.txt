@@ -1,0 +1,83 @@
+3D Force Graph 速查备忘（Vibecoding 用）
+
+一句话：这是一个 ThreeJS + 物理引擎驱动的 3D 力导向图渲染库，拿来就能在浏览器里跑一个可交互的网络图/知识图谱。
+
+=== 安装 ===
+npm install 3d-force-graph
+或者 CDN：<script src="//cdn.jsdelivr.net/npm/3d-force-graph"></script>
+
+=== 最快上手（10 行代码） ===
+import ForceGraph3D from '3d-force-graph';
+
+const graph = ForceGraph3D()
+  (document.getElementById('myDiv'))
+  .graphData({
+    nodes: [
+      { id: 'A', name: '节点A', val: 1 },
+      { id: 'B', name: '节点B', val: 10 }
+    ],
+    links: [
+      { source: 'A', target: 'B' }
+    ]
+  });
+
+=== 数据格式（就这俩字段） ===
+nodes: 每项要有 id，其他字段随意（name/color/val 自己定义都行）
+links: 每项要有 source 和 target，指向 nodes 的 id
+
+=== 天天要改的配置（背下来） ===
+背景色：.backgroundColor('#0d1117')
+节点大小：.nodeVal('val')          — val 越大球越大
+悬停标签：.nodeLabel(d => d.name)   — 鼠标上去显示文字
+节点颜色：.nodeColor(d => d.color) — 返回 CSS 色值字符串
+自动分色：.nodeAutoColorBy('group') — 按字段分组，自动分配颜色
+链路粗细：.linkWidth(d => d.weight)
+链路箭头：.linkDirectionalArrowLength(6)
+链路粒子：.linkDirectionalParticles(3)
+曲线弧度：.linkCurvature(0.5)      — 0 是直线，1 是半圆
+DAG 布局：.dagMode('td')            — td=上到下，lr=左到右，radialout=放射状
+
+=== 自定义节点外观（用 ThreeJS 物体） ===
+.nodeThreeObject(d => {
+  const geo = new THREE.SphereGeometry(d.val || 4);
+  const mat = new THREE.MeshNormalMaterial();
+  return new THREE.Mesh(geo, mat);
+})
+.nodeThreeObjectExtend(true)   // true=叠加在默认球上，false=完全替换
+
+=== 点交互（最常用的几个） ===
+.onNodeClick((node, event) => { ... })
+.onNodeHover(node => { document.body.style.cursor = node ? 'pointer' : 'default' })
+.onNodeDragEnd(node => {
+  node.fx = node.x; node.fy = node.y; node.fz = node.z;  // 固定位置
+})
+
+=== 镜头控制 ===
+.zoomToFit(400)                    // 自动缩放让所有节点都可见
+.cameraPosition({ z: 200 }, null, 1000)  // z=距离，第三个参数是动画时长(ms)
+.controls()                         // 拿到 ThreeJS OrbitControls 随便玩
+
+=== 性能优化（节点多了必须开） ===
+.enablePointerInteraction(false)  // 关掉鼠标悬停检测，省很多算力
+.nodeResolution(6)              // 球体精度降一降（默认 8）
+.warmupTicks(100)              // 先算完 100 帧再渲染
+.cooldownTicks(200)             // 渲染 200 帧后自动冻结引擎
+.pauseAnimation()               // 手动暂停
+.resumeAnimation()              // 恢复
+
+=== 后处理光效（Bloom/Glow） ===
+const composer = graph.postProcessingComposer();
+composer.addPass(new BloomPass());
+
+=== 动态数据 ===
+graph.graphData(newData)   // 直接换掉整张图
+
+=== 常用物理调参 ===
+.forceEngine('ngraph')              // 切到 ngraph 引擎（大图更丝滑）
+.d3Force('charge').strength(-200)  // 斥力，负数越大越排斥
+.d3AlphaDecay(0.01)                // 衰减慢一些，布局跑更久才稳定
+
+=== 场景扩展（插 ThreeJS 原生物体） ===
+graph.scene().add(light)            // 加灯
+graph.camera()                      // 访问相机
+graph.renderer()                   // 访问渲染器

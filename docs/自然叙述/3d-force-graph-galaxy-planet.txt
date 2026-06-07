@@ -1,0 +1,1026 @@
+宇宙星云星球星柱 — 6 星球 × 88 AOP 作战计划可视化
+
+=== 核心概念 ===
+
+整个 3D 力导向图 = 宇宙星云，两层节点：
+
+  第一层：6 颗大星球（Layer-0 母节点）
+    - 每个代表思维链的一个阶段
+    - 体积最大，最亮，位置固定
+
+  第二层：88 颗 AOP 小球（Layer-1~5 子节点）
+    - 每个代表一个原子作战操作
+    - 围绕对应星球分布，大小按连线层级递减
+    - 内部有跨星球、跨层级的复杂思维连线
+
+  连线分级（5 级）：
+    1 级（实线粗）：星球→星球主链路（step1→2→3→4→5→6→step1 反馈）
+    2 级（实线中）：AOP→同星球下一 AOP（层内顺序执行）
+    3 级（实线细）：AOP→同星球前序 AOP（层内回查）
+    4 级（虚线中）：AOP→跨星球下一 AOP（跨层依赖）
+    5 级（虚线细）：AOP→跨星球反馈 AOP（反馈链路）
+
+6 颗星球对应 6 步思维链：
+
+  星球1：意图理解 — L1（21 AOP：AOP-001~021）
+  星球2：情况判断 — L2（14 AOP：AOP-022~035）
+  星球3：形成构想 — L3（13 AOP：AOP-036~048）
+  星球4：制定计划 — L4（18 AOP：AOP-049~066）
+  星球5：仿真推演 — L5（15 AOP：AOP-067~081）
+  星球6：效果评估 — L6（7 AOP：AOP-082~088）
+
+=== 6 颗星球的固定属性 ===
+
+  星球1：意图理解 — 最亮核心星球
+  颜色：金色 #FFD700
+    位置：（0, 80, 0）
+    大小：球半径 18
+    视觉：发光球体 + 两层光晕 + 脉冲动画
+    AOP 数量：21
+
+星球2：情况判断
+  颜色：蓝色 #4A90D9
+    位置：（80, 40, 0）
+    大小：球半径 14
+    AOP 数量：14
+
+星球3：形成构想
+  颜色：绿色 #44DD88
+    位置：（80, -40, 0）
+    大小：球半径 14
+    AOP 数量：13
+
+星球4：制定计划
+  颜色：橙色 #FF9944
+    位置：（-80, -40, 0）
+    大小：球半径 14
+    AOP 数量：18
+
+星球5：仿真推演
+  颜色：紫色 #AA55FF
+    位置：（-80, 40, 0）
+    大小：球半径 14
+    AOP 数量：15
+
+星球6：效果评估
+  颜色：青色 #44DDFF
+    位置：（0, -80, 0）
+    大小：球半径 12
+    AOP 数量：7
+
+=== 数据结构（6 星球 + 88 AOP 子节点 + 5 级连线）===
+
+{
+  "nodes": [
+
+    // === Layer-0：6 颗母星球 ===
+
+    { "id": "母星-意图理解", "step": 1, "label": "意图理解", "layer": 0, "layerLabel": "L1", "aopRange": "AOP-001~021", "aopCount": 21, "color": "#FFD700", "size": 18, "x":   0, "y":  80, "z": 0 },
+
+    { "id": "母星-情况判断", "step": 2, "label": "情况判断", "layer": 0, "layerLabel": "L2", "aopRange": "AOP-022~035", "aopCount": 14, "color": "#4A90D9", "size": 14, "x":  80, "y":  40, "z": 0 },
+
+    { "id": "母星-形成构想", "step": 3, "label": "形成构想", "layer": 0, "layerLabel": "L3", "aopRange": "AOP-036~048", "aopCount": 13, "color": "#44DD88", "size": 14, "x":  80, "y": -40, "z": 0 },
+
+    { "id": "母星-制定计划", "step": 4, "label": "制定计划", "layer": 0, "layerLabel": "L4", "aopRange": "AOP-049~066", "aopCount": 18, "color": "#FF9944", "size": 14, "x": -80, "y": -40, "z": 0 },
+
+    { "id": "母星-仿真推演", "step": 5, "label": "仿真推演", "layer": 0, "layerLabel": "L5", "aopRange": "AOP-067~081", "aopCount": 15, "color": "#AA55FF", "size": 14, "x": -80, "y":  40, "z": 0 },
+
+    { "id": "母星-效果评估", "step": 6, "label": "效果评估", "layer": 0, "layerLabel": "L6", "aopRange": "AOP-082~088", "aopCount":  7, "color": "#44DDFF", "size": 12, "x":   0, "y": -80, "z": 0 },
+
+    // === Layer-1：意图理解（AOP-001~021，21 个）===
+
+    { "id": "AOP-001", "aop": 1,  "label": "明确解析上级指示",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":  -90, "y": 110, "z":  20 },
+    { "id": "AOP-002", "aop": 2,  "label": "明确分解作战命令",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":  -70, "y": 115, "z":  15 },
+    { "id": "AOP-003", "aop": 3,  "label": "明确提取任务目标",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":  -50, "y": 112, "z":  25 },
+    { "id": "AOP-004", "aop": 4,  "label": "明确识别时间节点",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":  -30, "y": 110, "z":  10 },
+    { "id": "AOP-005", "aop": 5,  "label": "明确归纳约束条件",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":  -10, "y": 115, "z":  20 },
+    { "id": "AOP-006", "aop": 6,  "label": "明确整合敌情数据",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":   10, "y": 112, "z":  30 },
+    { "id": "AOP-007", "aop": 7,  "label": "明确分析敌方编制",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":   30, "y": 115, "z":  15 },
+    { "id": "AOP-008", "aop": 8,  "label": "明确识别敌方部署",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":   50, "y": 110, "z":  25 },
+    { "id": "AOP-009", "aop": 9,  "label": "明确评估敌方能力",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":   70, "y": 115, "z":  10 },
+    { "id": "AOP-010", "aop": 10, "label": "明确推断敌方意图",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":   90, "y": 112, "z":  20 },
+    { "id": "AOP-011", "aop": 11, "label": "明确整合我情数据",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":  -80, "y":  90, "z":  15 },
+    { "id": "AOP-012", "aop": 12, "label": "明确梳理我方编制",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":  -60, "y":  92, "z":  25 },
+    { "id": "AOP-013", "aop": 13, "label": "明确梳理我方部署",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":  -40, "y":  88, "z":  10 },
+    { "id": "AOP-014", "aop": 14, "label": "明确评估我方能力",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":  -20, "y":  93, "z":  30 },
+    { "id": "AOP-015", "aop": 15, "label": "明确分析战场环境",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":    0, "y":  90, "z":  15 },
+    { "id": "AOP-016", "aop": 16, "label": "明确评估地形地貌",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":   20, "y":  92, "z":  25 },
+    { "id": "AOP-017", "aop": 17, "label": "明确评估气象水文",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":   40, "y":  88, "z":  10 },
+    { "id": "AOP-018", "aop": 18, "label": "明确确认法理授权",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":   60, "y":  93, "z":  30 },
+    { "id": "AOP-019", "aop": 19, "label": "明确适配交战规则",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":   80, "y":  90, "z":  15 },
+    { "id": "AOP-020", "aop": 20, "label": "明确核查情报体系",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":  -50, "y":  75, "z":  25 },
+    { "id": "AOP-021", "aop": 21, "label": "明确识别情报缺口",       "parent": "母星-意图理解", "layer": 1, "color": "#FFD700", "size": 4, "x":   50, "y":  75, "z":  20 },
+
+    // === Layer-2：情况判断（AOP-022~035，14 个）===
+
+    { "id": "AOP-022", "aop": 22, "label": "研判威胁等级",       "parent": "母星-情况判断", "layer": 2, "color": "#4A90D9", "size": 4, "x":  100, "y":  60, "z":  20 },
+    { "id": "AOP-023", "aop": 23, "label": "研判作战窗口",       "parent": "母星-情况判断", "layer": 2, "color": "#4A90D9", "size": 4, "x":  115, "y":  55, "z":  15 },
+    { "id": "AOP-024", "aop": 24, "label": "研判力量对比",       "parent": "母星-情况判断", "layer": 2, "color": "#4A90D9", "size": 4, "x":  130, "y":  50, "z":  25 },
+    { "id": "AOP-025", "aop": 25, "label": "研判任务优先级",     "parent": "母星-情况判断", "layer": 2, "color": "#4A90D9", "size": 4, "x":  110, "y":  42, "z":  10 },
+    { "id": "AOP-026", "aop": 26, "label": "研判攻击方向",       "parent": "母星-情况判断", "layer": 2, "color": "#4A90D9", "size": 4, "x":   95, "y":  38, "z":  30 },
+    { "id": "AOP-027", "aop": 27, "label": "研判风险等级",       "parent": "母星-情况判断", "layer": 2, "color": "#4A90D9", "size": 4, "x":   80, "y":  35, "z":  15 },
+    { "id": "AOP-028", "aop": 28, "label": "研判胜算概率",       "parent": "母星-情况判断", "layer": 2, "color": "#4A90D9", "size": 4, "x":  125, "y":  35, "z":  25 },
+    { "id": "AOP-029", "aop": 29, "label": "研判作战法",         "parent": "母星-情况判断", "layer": 2, "color": "#4A90D9", "size": 4, "x":  140, "y":  40, "z":  10 },
+    { "id": "AOP-030", "aop": 30, "label": "研判关键节点",       "parent": "母星-情况判断", "layer": 2, "color": "#4A90D9", "size": 4, "x":  105, "y":  28, "z":  20 },
+    { "id": "AOP-031", "aop": 31, "label": "研判协同关系",       "parent": "母星-情况判断", "layer": 2, "color": "#4A90D9", "size": 4, "x":   88, "y":  25, "z":  30 },
+    { "id": "AOP-032", "aop": 32, "label": "研判通信需求",       "parent": "母星-情况判断", "layer": 2, "color": "#4A90D9", "size": 4, "x":  120, "y":  22, "z":  15 },
+    { "id": "AOP-033", "aop": 33, "label": "研判法理风险",       "parent": "母星-情况判断", "layer": 2, "color": "#4A90D9", "size": 4, "x":  100, "y":  18, "z":  25 },
+    { "id": "AOP-034", "aop": 34, "label": "研判情报置信",       "parent": "母星-情况判断", "layer": 2, "color": "#4A90D9", "size": 4, "x":   85, "y":  15, "z":  10 },
+    { "id": "AOP-035", "aop": 35, "label": "研判替代方案",       "parent": "母星-情况判断", "layer": 2, "color": "#4A90D9", "size": 4, "x":  110, "y":  12, "z":  20 },
+
+    // === Layer-3：形成构想（AOP-036~048，13 个）===
+
+    { "id": "AOP-036", "aop": 36, "label": "生成任务分解",       "parent": "母星-形成构想", "layer": 3, "color": "#44DD88", "size": 4, "x":  100, "y": -20, "z":  20 },
+    { "id": "AOP-037", "aop": 37, "label": "生成力量部署",       "parent": "母星-形成构想", "layer": 3, "color": "#44DD88", "size": 4, "x":  115, "y": -25, "z":  15 },
+    { "id": "AOP-038", "aop": 38, "label": "生成行动路线",       "parent": "母星-形成构想", "layer": 3, "color": "#44DD88", "size": 4, "x":  130, "y": -30, "z":  25 },
+    { "id": "AOP-039", "aop": 39, "label": "生成时序安排",       "parent": "母星-形成构想", "layer": 3, "color": "#44DD88", "size": 4, "x":  110, "y": -38, "z":  10 },
+    { "id": "AOP-040", "aop": 40, "label": "生成资源调度",       "parent": "母星-形成构想", "layer": 3, "color": "#44DD88", "size": 4, "x":   95, "y": -42, "z":  30 },
+    { "id": "AOP-041", "aop": 41, "label": "生成火力计划",       "parent": "母星-制定计划", "layer": 3, "color": "#44DD88", "size": 4, "x":  -95, "y": -20, "z":  15 },
+    { "id": "AOP-042", "aop": 42, "label": "生成机动计划",       "parent": "母星-制定计划", "layer": 3, "color": "#44DD88", "size": 4, "x":  -80, "y": -25, "z":  25 },
+    { "id": "AOP-043", "aop": 43, "label": "生成协同计划",       "parent": "母星-制定计划", "layer": 3, "color": "#44DD88", "size": 4, "x":  -65, "y": -30, "z":  10 },
+    { "id": "AOP-044", "aop": 44, "label": "生成电子对抗计划",   "parent": "母星-制定计划", "layer": 3, "color": "#44DD88", "size": 4, "x":  -95, "y": -38, "z":  30 },
+    { "id": "AOP-045", "aop": 45, "label": "生成通信保障方案",   "parent": "母星-制定计划", "layer": 3, "color": "#44DD88", "size": 4, "x":  -80, "y": -42, "z":  15 },
+    { "id": "AOP-046", "aop": 46, "label": "生成指挥控制架构",   "parent": "母星-制定计划", "layer": 3, "color": "#44DD88", "size": 4, "x":  -65, "y": -38, "z":  25 },
+    { "id": "AOP-047", "aop": 47, "label": "生成替代方案集",     "parent": "母星-制定计划", "layer": 3, "color": "#44DD88", "size": 4, "x":  -95, "y": -50, "z":  10 },
+    { "id": "AOP-048", "aop": 48, "label": "生成风险对策",       "parent": "母星-制定计划", "layer": 3, "color": "#44DD88", "size": 4, "x":  -80, "y": -55, "z":  20 },
+
+    // === Layer-4：制定计划（AOP-049~066，18 个）===
+
+    { "id": "AOP-049", "aop": 49, "label": "控制火力协调",       "parent": "母星-制定计划", "layer": 4, "color": "#FF9944", "size": 3, "x": -110, "y": -55, "z":  20 },
+    { "id": "AOP-050", "aop": 50, "label": "控制机动协调",       "parent": "母星-制定计划", "layer": 4, "color": "#FF9944", "size": 3, "x": -125, "y": -58, "z":  15 },
+    { "id": "AOP-051", "aop": 51, "label": "控制电子对抗协调",   "parent": "母星-制定计划", "layer": 4, "color": "#FF9944", "size": 3, "x": -105, "y": -62, "z":  25 },
+    { "id": "AOP-052", "aop": 52, "label": "控制指挥协调",       "parent": "母星-制定计划", "layer": 4, "color": "#FF9944", "size": 3, "x":  -90, "y": -65, "z":  10 },
+    { "id": "AOP-053", "aop": 53, "label": "控制通信联络",       "parent": "母星-制定计划", "layer": 4, "color": "#FF9944", "size": 3, "x": -110, "y": -68, "z":  30 },
+    { "id": "AOP-054", "aop": 54, "label": "控制情报分发",       "parent": "母星-制定计划", "layer": 4, "color": "#FF9944", "size": 3, "x":  -95, "y": -70, "z":  15 },
+    { "id": "AOP-055", "aop": 55, "label": "控制态势更新",       "parent": "母星-制定计划", "layer": 4, "color": "#FF9944", "size": 3, "x": -120, "y": -72, "z":  25 },
+    { "id": "AOP-056", "aop": 56, "label": "控制指令下达",       "parent": "母星-制定计划", "layer": 4, "color": "#FF9944", "size": 3, "x": -105, "y": -75, "z":  10 },
+    { "id": "AOP-057", "aop": 57, "label": "控制行动同步",       "parent": "母星-制定计划", "layer": 4, "color": "#FF9944", "size": 3, "x":  -85, "y": -78, "z":  20 },
+    { "id": "AOP-058", "aop": 58, "label": "控制力量调整",       "parent": "母星-制定计划", "layer": 4, "color": "#FF9944", "size": 3, "x": -110, "y": -80, "z":  15 },
+    { "id": "AOP-059", "aop": 59, "label": "控制时间控制",       "parent": "母星-制定计划", "layer": 4, "color": "#FF9944", "size": 3, "x":  -95, "y": -82, "z":  25 },
+    { "id": "AOP-060", "aop": 60, "label": "控制风险应对",       "parent": "母星-制定计划", "layer": 4, "color": "#FF9944", "size": 3, "x": -125, "y": -85, "z":  10 },
+    { "id": "AOP-061", "aop": 61, "label": "控制协同控制",       "parent": "母星-制定计划", "layer": 4, "color": "#FF9944", "size": 3, "x": -105, "y": -88, "z":  30 },
+    { "id": "AOP-062", "aop": 62, "label": "控制法理合规",       "parent": "母星-制定计划", "layer": 4, "color": "#FF9944", "size": 3, "x":  -90, "y": -90, "z":  15 },
+    { "id": "AOP-063", "aop": 63, "label": "控制临机决策",       "parent": "母星-制定计划", "layer": 4, "color": "#FF9944", "size": 3, "x": -110, "y": -92, "z":  20 },
+    { "id": "AOP-064", "aop": 64, "label": "控制特殊处置",       "parent": "母星-制定计划", "layer": 4, "color": "#FF9944", "size": 3, "x":  -95, "y": -95, "z":  25 },
+    { "id": "AOP-065", "aop": 65, "label": "控制作战记录",       "parent": "母星-制定计划", "layer": 4, "color": "#FF9944", "size": 3, "x": -120, "y": -60, "z":  10 },
+    { "id": "AOP-066", "aop": 66, "label": "控制作战评估",       "parent": "母星-制定计划", "layer": 4, "color": "#FF9944", "size": 3, "x": -120, "y": -50, "z":  20 },
+
+    // === Layer-5：仿真推演（AOP-067~081，15 个）===
+
+    { "id": "AOP-067", "aop": 67, "label": "适应敌情变化",       "parent": "母星-仿真推演", "layer": 5, "color": "#AA55FF", "size": 3, "x": -100, "y":  55, "z":  20 },
+    { "id": "AOP-068", "aop": 68, "label": "适应我情变化",       "parent": "母星-仿真推演", "layer": 5, "color": "#AA55FF", "size": 3, "x": -115, "y":  52, "z":  15 },
+    { "id": "AOP-069", "aop": 69, "label": "适应任务变化",       "parent": "母星-仿真推演", "layer": 5, "color": "#AA55FF", "size": 3, "x": -100, "y":  48, "z":  25 },
+    { "id": "AOP-070", "aop": 70, "label": "适应威胁变化",       "parent": "母星-仿真推演", "layer": 5, "color": "#AA55FF", "size": 3, "x":  -85, "y":  45, "z":  10 },
+    { "id": "AOP-071", "aop": 71, "label": "适应计划变化",       "parent": "母星-仿真推演", "layer": 5, "color": "#AA55FF", "size": 3, "x": -110, "y":  42, "z":  30 },
+    { "id": "AOP-072", "aop": 72, "label": "适应协同变化",       "parent": "母星-仿真推演", "layer": 5, "color": "#AA55FF", "size": 3, "x":  -95, "y":  38, "z":  15 },
+    { "id": "AOP-073", "aop": 73, "label": "适应火力反馈",       "parent": "母星-仿真推演", "layer": 5, "color": "#AA55FF", "size": 3, "x": -105, "y":  35, "z":  25 },
+    { "id": "AOP-074", "aop": 74, "label": "适应机动反馈",       "parent": "母星-仿真推演", "layer": 5, "color": "#AA55FF", "size": 3, "x":  -85, "y":  32, "z":  10 },
+    { "id": "AOP-075", "aop": 75, "label": "适应电子对抗反馈",   "parent": "母星-仿真推演", "layer": 5, "color": "#AA55FF", "size": 3, "x": -115, "y":  28, "z":  30 },
+    { "id": "AOP-076", "aop": 76, "label": "适应指挥控制反馈",   "parent": "母星-仿真推演", "layer": 5, "color": "#AA55FF", "size": 3, "x":  -95, "y":  25, "z":  15 },
+    { "id": "AOP-077", "aop": 77, "label": "适应通信反馈",       "parent": "母星-仿真推演", "layer": 5, "color": "#AA55FF", "size": 3, "x": -110, "y":  22, "z":  25 },
+    { "id": "AOP-078", "aop": 78, "label": "适应法理变化",       "parent": "母星-仿真推演", "layer": 5, "color": "#AA55FF", "size": 3, "x":  -80, "y":  18, "z":  10 },
+    { "id": "AOP-079", "aop": 79, "label": "适应情报更新",       "parent": "母星-仿真推演", "layer": 5, "color": "#AA55FF", "size": 3, "x": -100, "y":  15, "z":  20 },
+    { "id": "AOP-080", "aop": 80, "label": "适应环境变化",       "parent": "母星-仿真推演", "layer": 5, "color": "#AA55FF", "size": 3, "x":  -85, "y":  12, "z":  15 },
+    { "id": "AOP-081", "aop": 81, "label": "适应作战评估",       "parent": "母星-仿真推演", "layer": 5, "color": "#AA55FF", "size": 3, "x": -105, "y":   8, "z":  25 },
+
+    // === Layer-6：效果评估（AOP-082~088，7 个）===
+
+    { "id": "AOP-082", "aop": 82, "label": "优化战法总结",       "parent": "母星-效果评估", "layer": 6, "color": "#44DDFF", "size": 3, "x":  -20, "y": -105, "z":  20 },
+    { "id": "AOP-083", "aop": 83, "label": "优化协同总结",       "parent": "母星-效果评估", "layer": 6, "color": "#44DDFF", "size": 3, "x":   -5, "y": -112, "z":  15 },
+    { "id": "AOP-084", "aop": 84, "label": "优化指挥总结",       "parent": "母星-效果评估", "layer": 6, "color": "#44DDFF", "size": 3, "x":   10, "y": -118, "z":  25 },
+    { "id": "AOP-085", "aop": 85, "label": "优化通信总结",       "parent": "母星-效果评估", "layer": 6, "color": "#44DDFF", "size": 3, "x":  -15, "y": -110, "z":  10 },
+    { "id": "AOP-086", "aop": 86, "label": "优化情报总结",       "parent": "母星-效果评估", "layer": 6, "color": "#44DDFF", "size": 3, "x":    5, "y": -115, "z":  30 },
+    { "id": "AOP-087", "aop": 87, "label": "优化能力评估",       "parent": "母星-效果评估", "layer": 6, "color": "#44DDFF", "size": 3, "x":  -10, "y": -120, "z":  15 },
+    { "id": "AOP-088", "aop": 88, "label": "优化作战建议",       "parent": "母星-效果评估", "layer": 6, "color": "#44DDFF", "size": 3, "x":    0, "y": -108, "z":  20 }
+  ],
+
+  "links": [
+
+    // =========================================================
+    // 第 1 级：母星球→母星球主链路（实线粗，step1→2→3→4→5→6）
+    // =========================================================
+    { "source": "母星-意图理解", "target": "母星-情况判断", "level": 1, "type": "command", "color": "#FFFFFF", "width": 3, "opacity": 0.9, "dashed": false },
+    { "source": "母星-情况判断", "target": "母星-形成构想", "level": 1, "type": "command", "color": "#FFFFFF", "width": 3, "opacity": 0.9, "dashed": false },
+    { "source": "母星-形成构想", "target": "母星-制定计划", "level": 1, "type": "command", "color": "#FFFFFF", "width": 3, "opacity": 0.9, "dashed": false },
+    { "source": "母星-制定计划", "target": "母星-仿真推演", "level": 1, "type": "command", "color": "#FFFFFF", "width": 3, "opacity": 0.9, "dashed": false },
+    { "source": "母星-仿真推演", "target": "母星-效果评估", "level": 1, "type": "command", "color": "#FFFFFF", "width": 3, "opacity": 0.9, "dashed": false },
+
+    // =========================================================
+    // 第 2 级：反馈链路（虚线细，step6→step1）
+    // =========================================================
+    { "source": "母星-效果评估", "target": "母星-意图理解", "level": 2, "type": "feedback", "color": "#44DDFF", "width": 2, "opacity": 0.5, "dashed": true },
+
+    // =========================================================
+    // 第 3 级：同星球内 AOP 顺序连线（实线中，层内执行链）
+    // L1 层内
+    // =========================================================
+    { "source": "AOP-001", "target": "AOP-002", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-002", "target": "AOP-003", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-003", "target": "AOP-004", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-004", "target": "AOP-005", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-005", "target": "AOP-006", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-006", "target": "AOP-007", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-007", "target": "AOP-008", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-008", "target": "AOP-009", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-009", "target": "AOP-010", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-010", "target": "AOP-011", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-011", "target": "AOP-012", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-012", "target": "AOP-013", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-013", "target": "AOP-014", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-014", "target": "AOP-015", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-015", "target": "AOP-016", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-016", "target": "AOP-017", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-017", "target": "AOP-018", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-018", "target": "AOP-019", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-019", "target": "AOP-020", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-020", "target": "AOP-021", "level": 3, "type": "intra", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+    // L1→L2 跨层
+    { "source": "AOP-021", "target": "AOP-022", "level": 3, "type": "cross", "color": "#FFD700", "width": 2, "opacity": 0.7, "dashed": false },
+
+    // L2 层内
+    { "source": "AOP-022", "target": "AOP-023", "level": 3, "type": "intra", "color": "#4A90D9", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-023", "target": "AOP-024", "level": 3, "type": "intra", "color": "#4A90D9", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-024", "target": "AOP-025", "level": 3, "type": "intra", "color": "#4A90D9", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-025", "target": "AOP-026", "level": 3, "type": "intra", "color": "#4A90D9", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-026", "target": "AOP-027", "level": 3, "type": "intra", "color": "#4A90D9", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-027", "target": "AOP-028", "level": 3, "type": "intra", "color": "#4A90D9", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-028", "target": "AOP-029", "level": 3, "type": "intra", "color": "#4A90D9", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-029", "target": "AOP-030", "level": 3, "type": "intra", "color": "#4A90D9", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-030", "target": "AOP-031", "level": 3, "type": "intra", "color": "#4A90D9", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-031", "target": "AOP-032", "level": 3, "type": "intra", "color": "#4A90D9", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-032", "target": "AOP-033", "level": 3, "type": "intra", "color": "#4A90D9", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-033", "target": "AOP-034", "level": 3, "type": "intra", "color": "#4A90D9", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-034", "target": "AOP-035", "level": 3, "type": "intra", "color": "#4A90D9", "width": 2, "opacity": 0.7, "dashed": false },
+    // L2→L3 跨层
+    { "source": "AOP-035", "target": "AOP-036", "level": 3, "type": "cross", "color": "#4A90D9", "width": 2, "opacity": 0.7, "dashed": false },
+
+    // L3 层内
+    { "source": "AOP-036", "target": "AOP-037", "level": 3, "type": "intra", "color": "#44DD88", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-037", "target": "AOP-038", "level": 3, "type": "intra", "color": "#44DD88", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-038", "target": "AOP-039", "level": 3, "type": "intra", "color": "#44DD88", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-039", "target": "AOP-040", "level": 3, "type": "intra", "color": "#44DD88", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-040", "target": "AOP-041", "level": 3, "type": "intra", "color": "#44DD88", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-041", "target": "AOP-042", "level": 3, "type": "intra", "color": "#44DD88", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-042", "target": "AOP-043", "level": 3, "type": "intra", "color": "#44DD88", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-043", "target": "AOP-044", "level": 3, "type": "intra", "color": "#44DD88", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-044", "target": "AOP-045", "level": 3, "type": "intra", "color": "#44DD88", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-045", "target": "AOP-046", "level": 3, "type": "intra", "color": "#44DD88", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-046", "target": "AOP-047", "level": 3, "type": "intra", "color": "#44DD88", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-047", "target": "AOP-048", "level": 3, "type": "intra", "color": "#44DD88", "width": 2, "opacity": 0.7, "dashed": false },
+    // L3→L4 跨层
+    { "source": "AOP-048", "target": "AOP-049", "level": 3, "type": "cross", "color": "#44DD88", "width": 2, "opacity": 0.7, "dashed": false },
+
+    // L4 层内
+    { "source": "AOP-049", "target": "AOP-050", "level": 3, "type": "intra", "color": "#FF9944", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-050", "target": "AOP-051", "level": 3, "type": "intra", "color": "#FF9944", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-051", "target": "AOP-052", "level": 3, "type": "intra", "color": "#FF9944", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-052", "target": "AOP-053", "level": 3, "type": "intra", "color": "#FF9944", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-053", "target": "AOP-054", "level": 3, "type": "intra", "color": "#FF9944", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-054", "target": "AOP-055", "level": 3, "type": "intra", "color": "#FF9944", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-055", "target": "AOP-056", "level": 3, "type": "intra", "color": "#FF9944", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-056", "target": "AOP-057", "level": 3, "type": "intra", "color": "#FF9944", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-057", "target": "AOP-058", "level": 3, "type": "intra", "color": "#FF9944", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-058", "target": "AOP-059", "level": 3, "type": "intra", "color": "#FF9944", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-059", "target": "AOP-060", "level": 3, "type": "intra", "color": "#FF9944", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-060", "target": "AOP-061", "level": 3, "type": "intra", "color": "#FF9944", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-061", "target": "AOP-062", "level": 3, "type": "intra", "color": "#FF9944", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-062", "target": "AOP-063", "level": 3, "type": "intra", "color": "#FF9944", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-063", "target": "AOP-064", "level": 3, "type": "intra", "color": "#FF9944", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-064", "target": "AOP-065", "level": 3, "type": "intra", "color": "#FF9944", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-065", "target": "AOP-066", "level": 3, "type": "intra", "color": "#FF9944", "width": 2, "opacity": 0.7, "dashed": false },
+    // L4→L5 跨层
+    { "source": "AOP-066", "target": "AOP-067", "level": 3, "type": "cross", "color": "#FF9944", "width": 2, "opacity": 0.7, "dashed": false },
+
+    // L5 层内
+    { "source": "AOP-067", "target": "AOP-068", "level": 3, "type": "intra", "color": "#AA55FF", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-068", "target": "AOP-069", "level": 3, "type": "intra", "color": "#AA55FF", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-069", "target": "AOP-070", "level": 3, "type": "intra", "color": "#AA55FF", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-070", "target": "AOP-071", "level": 3, "type": "intra", "color": "#AA55FF", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-071", "target": "AOP-072", "level": 3, "type": "intra", "color": "#AA55FF", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-072", "target": "AOP-073", "level": 3, "type": "intra", "color": "#AA55FF", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-073", "target": "AOP-074", "level": 3, "type": "intra", "color": "#AA55FF", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-074", "target": "AOP-075", "level": 3, "type": "intra", "color": "#AA55FF", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-075", "target": "AOP-076", "level": 3, "type": "intra", "color": "#AA55FF", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-076", "target": "AOP-077", "level": 3, "type": "intra", "color": "#AA55FF", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-077", "target": "AOP-078", "level": 3, "type": "intra", "color": "#AA55FF", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-078", "target": "AOP-079", "level": 3, "type": "intra", "color": "#AA55FF", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-079", "target": "AOP-080", "level": 3, "type": "intra", "color": "#AA55FF", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-080", "target": "AOP-081", "level": 3, "type": "intra", "color": "#AA55FF", "width": 2, "opacity": 0.7, "dashed": false },
+    // L5→L6 跨层
+    { "source": "AOP-081", "target": "AOP-082", "level": 3, "type": "cross", "color": "#AA55FF", "width": 2, "opacity": 0.7, "dashed": false },
+
+    // L6 层内
+    { "source": "AOP-082", "target": "AOP-083", "level": 3, "type": "intra", "color": "#44DDFF", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-083", "target": "AOP-084", "level": 3, "type": "intra", "color": "#44DDFF", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-084", "target": "AOP-085", "level": 3, "type": "intra", "color": "#44DDFF", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-085", "target": "AOP-086", "level": 3, "type": "intra", "color": "#44DDFF", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-086", "target": "AOP-087", "level": 3, "type": "intra", "color": "#44DDFF", "width": 2, "opacity": 0.7, "dashed": false },
+    { "source": "AOP-087", "target": "AOP-088", "level": 3, "type": "intra", "color": "#44DDFF", "width": 2, "opacity": 0.7, "dashed": false },
+
+    // =========================================================
+    // 第 4 级：跨星球 AOP 回查连线（虚线细，反馈链路）
+    // L6→L1 反馈闭环
+    // =========================================================
+    { "source": "AOP-088", "target": "AOP-001", "level": 4, "type": "feedback", "color": "#44DDFF", "width": 1.5, "opacity": 0.4, "dashed": true },
+
+    // =========================================================
+    // 第 5 级：关键 AOP 跨层依赖连线（细线，跨两个星球）
+    // =========================================================
+    { "source": "AOP-010", "target": "AOP-030", "level": 5, "type": "dep", "color": "#FFD700", "width": 1, "opacity": 0.3, "dashed": true },
+    { "source": "AOP-020", "target": "AOP-035", "level": 5, "type": "dep", "color": "#FFD700", "width": 1, "opacity": 0.3, "dashed": true },
+    { "source": "AOP-029", "target": "AOP-047", "level": 5, "type": "dep", "color": "#4A90D9", "width": 1, "opacity": 0.3, "dashed": true },
+    { "source": "AOP-035", "target": "AOP-048", "level": 5, "type": "dep", "color": "#4A90D9", "width": 1, "opacity": 0.3, "dashed": true },
+    { "source": "AOP-046", "target": "AOP-066", "level": 5, "type": "dep", "color": "#44DD88", "width": 1, "opacity": 0.3, "dashed": true },
+    { "source": "AOP-060", "target": "AOP-080", "level": 5, "type": "dep", "color": "#FF9944", "width": 1, "opacity": 0.3, "dashed": true },
+    { "source": "AOP-075", "target": "AOP-087", "level": 5, "type": "dep", "color": "#AA55FF", "width": 1, "opacity": 0.3, "dashed": true },
+    { "source": "AOP-081", "target": "AOP-088", "level": 5, "type": "dep", "color": "#AA55FF", "width": 1, "opacity": 0.3, "dashed": true }
+  ]
+}
+
+=== 连线层级总结 ===
+
+  第1级：母星球→母星球主链路（5条，白色实线粗）
+  第2级：反馈链路（1条，青色虚线细）
+  第3级：同星球内 AOP 顺序链 + 跨层跳转（共88条，各色实线中）
+  第4级：AOP 反馈闭环（1条，青色虚线细）
+  第5级：关键 AOP 跨层依赖（8条，各色虚线极细）
+
+  总计约 103 条连线，清晰分层，互不缠绕
+
+=== 渲染代码（分层大小 + 分级连线样式）===
+
+// 根据层级决定球体大小
+function getNodeSize(node) {
+  if (node.layer === 0) {
+    // 母星球：最大
+    return node.size;
+  } else if (node.layer <= 3) {
+    // AOP L1-L3：中等
+    return node.size;
+  } else {
+    // AOP L4-L6：较小
+    return node.size;
+  }
+}
+
+// 根据连线级别决定样式
+function getLinkStyle(link) {
+  switch (link.level) {
+    case 1: // 母星球主链路：白色粗实线
+      return { color: "#FFFFFF", width: 3, opacity: 0.9, dashed: false };
+    case 2: // 反馈链路：青色虚线细
+      return { color: "#44DDFF", width: 2, opacity: 0.5, dashed: true };
+    case 3: // AOP 层内链：同色实线中
+      return { color: link.color, width: 2, opacity: 0.7, dashed: false };
+    case 4: // AOP 反馈闭环：青色虚线细
+      return { color: "#44DDFF", width: 1.5, opacity: 0.4, dashed: true };
+    case 5: // 关键依赖：极细虚线
+      return { color: link.color, width: 1, opacity: 0.3, dashed: true };
+    default:
+      return { color: "#FFFFFF", width: 1, opacity: 0.5, dashed: false };
+  }
+}
+
+// 母星球渲染（发光球体 + 两层光晕）
+function createPlanet(node) {
+  if (node.layer !== 0) return null;
+
+  const group = new THREE.Group();
+  const radius = node.size;
+  const color = new THREE.Color(node.color);
+
+  // 核心球体
+  const sphere = new THREE.Mesh(
+    new THREE.SphereGeometry(radius, 32, 32),
+    new THREE.MeshStandardMaterial({
+      color, emissive: color, emissiveIntensity: 0.9,
+      roughness: 0.2, metalness: 0.1
+    })
+  );
+  group.add(sphere);
+
+  // 内层光晕
+  group.add(new THREE.Mesh(
+    new THREE.SphereGeometry(radius * 1.6, 32, 32),
+    new THREE.MeshBasicMaterial({
+      color, transparent: true, opacity: 0.12,
+      side: THREE.BackSide, blending: THREE.AdditiveBlending, depthWrite: false
+    })
+  ));
+
+  // 外层光晕
+  group.add(new THREE.Mesh(
+    new THREE.SphereGeometry(radius * 2.5, 16, 16),
+    new THREE.MeshBasicMaterial({
+      color, transparent: true, opacity: 0.06,
+      side: THREE.BackSide, blending: THREE.AdditiveBlending, depthWrite: false
+    })
+  ));
+
+  return group;
+}
+
+// AOP 小球渲染（发光球体 + 单层光晕）
+function createAopNode(node) {
+  if (node.layer === 0) return null;
+
+  const group = new THREE.Group();
+  const radius = node.size;
+  const color = new THREE.Color(node.color);
+
+  const sphere = new THREE.Mesh(
+    new THREE.SphereGeometry(radius, 16, 16),
+    new THREE.MeshStandardMaterial({
+      color, emissive: color, emissiveIntensity: 0.6,
+      roughness: 0.3, metalness: 0.1
+    })
+  );
+  group.add(sphere);
+
+  // 单层光晕
+  group.add(new THREE.Mesh(
+    new THREE.SphereGeometry(radius * 1.8, 16, 16),
+    new THREE.MeshBasicMaterial({
+      color, transparent: true, opacity: 0.08,
+      side: THREE.BackSide, blending: THREE.AdditiveBlending, depthWrite: false
+    })
+  ));
+
+  return group;
+}
+
+// 连线渲染（分级样式）
+function createLink(link) {
+  if (!link.source || !link.target) return null;
+
+  const s = new THREE.Vector3(link.source.x || 0, link.source.y || 0, link.source.z || 0);
+  const t = new THREE.Vector3(link.target.x || 0, link.target.y || 0, link.target.z || 0);
+
+  const curve = new THREE.LineCurve3(s, t);
+  const style = getLinkStyle(link);
+
+  const geo = new THREE.BufferGeometry().setFromPoints(curve.getPoints(10));
+  const mat = new THREE.LineBasicMaterial({
+    color: style.color,
+    transparent: true,
+    opacity: style.opacity,
+    linewidth: style.width,
+    dashed: style.dashed
+  });
+
+  return new THREE.Line(geo, mat);
+}
+
+// 母星球脉冲动画（最亮的那个最强）
+graph.onEngineTick(() => {
+  const t = Date.now() * 0.002;
+  const nodes = graph.graphData().nodes;
+
+  nodes.forEach((node, i) => {
+    if (!node.__threeObj) return;
+
+    const sphere = node.__threeObj.children[0];
+    if (!sphere || !sphere.material) return;
+
+    const phase = i * (Math.PI / 3);
+    const pulse = node.layer === 0
+      ? 0.7 + 0.3 * Math.abs(Math.sin(t * 1.2 + phase))  // 母星球更剧烈
+      : 0.5 + 0.2 * Math.abs(Math.sin(t + phase));       // AOP 小球轻微
+
+    sphere.material.emissiveIntensity = pulse;
+
+    // AOP 小球轻微浮动
+    if (node.layer > 0) {
+      const floatY = Math.sin(t * 0.4 + i) * 0.5;
+      node.__threeObj.position.y = (node.y || 0) + floatY;
+    }
+  });
+});
+
+=== 坐标设计（分层分圈，互不缠绕）===
+
+  母星球排布（六边形，但 z 轴分层）：
+
+         (0, 80, 0)
+       母星-意图理解
+           ★
+
+    (-80, 40, 0)    (80, 40, 0)
+     母星-仿真推演    母星-情况判断
+         ◇              ●
+
+    (-80, -40, 0)   (80, -40, 0)
+     母星-制定计划    母星-形成构想
+         ◆              ▲
+
+         (0, -80, 0)
+       母星-效果评估
+           ▲
+
+  AOP 小球围绕各母星球分布，z 坐标错开：
+    L1（意图理解）：z = 10~30（同象限内错开）
+    L2（情况判断）：z = 10~30
+    L3（形成构想）：z = 10~30
+    L4（制定计划）：z = 10~30
+    L5（仿真推演）：z = 8~30
+    L6（效果评估）：z = 10~30
+
+  所有 AOP 小球均以母星球为中心向外辐射排列，
+  同一星球内的 AOP 不跨入其他星球区域，
+  跨星球连线有清晰的空间跨越。
+
+=== 分级视图系统（6 个视角 + 1 个全景）===
+
+概述：
+  视图 0（默认）：全景作战方案 — 所有母星球 + 所有 AOP 可见
+  视图 1~6：各母星球主视角 — 该星球居中放大，其他星球缩小淡出
+
+// ============================================================
+// 视图 0：默认全景作战方案
+// ============================================================
+function view0_Overview() {
+  currentView = 0;
+
+  // 恢复所有节点原始大小
+  graph.nodeVal(node => node.layer === 0 ? 18 : node.size);
+  graph.nodeOpacity(node => 1.0);
+
+  // 恢复所有连线原始样式
+  graph.linkOpacity(link => getLinkStyle(link).opacity);
+  graph.linkColor(link => getLinkStyle(link).color);
+  graph.linkWidth(link => getLinkStyle(link).width);
+
+  // 全景相机
+  graph.cameraPosition({ x: 0, y: 0, z: 280 }, { x: 0, y: 0, z: 0 }, 1200);
+
+  updateViewBadge("视图0 全景作战方案");
+}
+
+// ============================================================
+// 视图 1：意图理解主视角
+// ============================================================
+function view1_IntentUnderstanding() {
+// ============================================================
+// 3D 环绕轨道相机系统
+// ============================================================
+
+// 每个母星球的轨道参数
+const ORBIT_CONFIG = {
+  "母星-意图理解": { orbitRadius: 80, orbitSpeed: 0.03, orbitTiltX: 0.4, orbitTiltZ: 0.2, cameraDist: 120 },
+  "母星-情况判断": { orbitRadius: 70, orbitSpeed: 0.025, orbitTiltX: 0.3, orbitTiltZ: -0.1, cameraDist: 110 },
+  "母星-形成构想": { orbitRadius: 70, orbitSpeed: 0.02, orbitTiltX: -0.2, orbitTiltZ: 0.3, cameraDist: 110 },
+  "母星-制定计划": { orbitRadius: 70, orbitSpeed: 0.022, orbitTiltX: -0.3, orbitTiltZ: -0.2, cameraDist: 110 },
+  "母星-仿真推演": { orbitRadius: 70, orbitSpeed: 0.028, orbitTiltX: 0.2, orbitTiltZ: 0.1, cameraDist: 110 },
+  "母星-效果评估": { orbitRadius: 75, orbitSpeed: 0.018, orbitTiltX: 0.5, orbitTiltZ: 0.3, cameraDist: 115 }
+};
+
+// 轨道相机状态
+let orbitState = {
+  angle: 0,       // 当前轨道角度
+  radius: 120,    // 相机轨道半径
+  tiltX: 0,       // 轨道倾角 X
+  tiltZ: 0,       // 轨道倾角 Z
+  height: 0,      // 垂直偏移
+  targetNode: null, // 当前环绕目标节点
+  active: false,   // 是否处于环绕模式
+  speed: 0.015     // 环绕速度
+};
+
+// 从节点数据获取轨道配置
+function getOrbitConfig(planetId) {
+  return ORBIT_CONFIG[planetId] || { orbitRadius: 70, orbitSpeed: 0.02, orbitTiltX: 0, orbitTiltZ: 0, cameraDist: 110 };
+}
+
+// ============================================================
+// 视图 0：全景作战方案（保留力导向 + 3D 环绕全景）
+// ============================================================
+function view0_Overview() {
+  currentView = 0;
+  orbitState.active = false;
+
+  // 恢复所有节点原始大小
+  graph.nodeVal(node => node.layer === 0 ? 18 : node.size);
+  graph.nodeOpacity(node => 1.0);
+
+  // 恢复所有连线
+  graph.linkOpacity(link => getLinkStyle(link).opacity);
+  graph.linkColor(link => getLinkStyle(link).color);
+  graph.linkWidth(link => getLinkStyle(link).width);
+
+  // 全景 3D 环绕相机（绕整个星系旋转）
+  startOverviewOrbit();
+  updateViewBadge("视图0 全景作战方案");
+}
+
+// ============================================================
+// 全景环绕（绕整个星图旋转）
+// ============================================================
+let overviewOrbitAngle = 0;
+
+function startOverviewOrbit() {
+  orbitState.active = true;
+  orbitState.targetNode = null;
+  orbitState.radius = 220;
+  orbitState.height = 80;
+  orbitState.speed = 0.004;
+  overviewOrbitAngle = 0;
+}
+
+function updateOverviewOrbit() {
+  if (!orbitState.active || currentView !== 0) return;
+
+  overviewOrbitAngle += orbitState.speed;
+  const t = overviewOrbitAngle;
+
+  // 相机沿大轨道绕整个星系
+  const camX = Math.sin(t) * orbitState.radius;
+  const camY = orbitState.height + Math.sin(t * 0.5) * 20; // 轻微上下起伏
+  const camZ = Math.cos(t) * orbitState.radius;
+
+  graph.cameraPosition(
+    { x: camX, y: camY, z: camZ },
+    { x: 0, y: 0, z: 0 },
+    0  // 即时更新，无过渡
+  );
+}
+
+// ============================================================
+// 视图 1~6：各母星球 3D 环绕轨道
+// ============================================================
+
+function view1_IntentUnderstanding() {
+  currentView = 1;
+  enterPlanetOrbit("母星-意图理解", "视图1 意图理解");
+}
+function view2_SituationJudgment() {
+  currentView = 2;
+  enterPlanetOrbit("母星-情况判断", "视图2 情况判断");
+}
+function view3_ConceptFormation() {
+  currentView = 3;
+  enterPlanetOrbit("母星-形成构想", "视图3 形成构想");
+}
+function view4_PlanFormulation() {
+  currentView = 4;
+  enterPlanetOrbit("母星-制定计划", "视图4 制定计划");
+}
+function view5_Simulation() {
+  currentView = 5;
+  enterPlanetOrbit("母星-仿真推演", "视图5 仿真推演");
+}
+function view6_Evaluation() {
+  currentView = 6;
+  enterPlanetOrbit("母星-效果评估", "视图6 效果评估");
+}
+
+// 进入指定母星球的环绕轨道
+function enterPlanetOrbit(planetId, badgeText) {
+  orbitState.active = true;
+  orbitState.targetNode = planetId;
+  orbitState.angle = 0;
+
+  const cfg = getOrbitConfig(planetId);
+  orbitState.radius = cfg.cameraDist;
+  orbitState.tiltX = cfg.orbitTiltX;
+  orbitState.tiltZ = cfg.orbitTiltZ;
+  orbitState.speed = cfg.orbitSpeed;
+
+  // 该星球放大，其他缩小
+  graph.nodeVal(node => {
+    if (node.id === planetId) return 22;
+    if (node.layer === 0) return 6;
+    if (node.parent === planetId) return node.size * 1.15;
+    return node.size * 0.65;
+  });
+  graph.nodeOpacity(node => {
+    if (node.id === planetId) return 1.0;
+    if (node.layer === 0) return 0.12;
+    if (node.parent === planetId) return 0.95;
+    return 0.3;
+  });
+
+  // 只亮相关连线
+  const aopRange = getAopRange(planetId);
+  graph.linkOpacity(link => getLinkOpacityByPlanet(link, planetId, aopRange));
+
+  updateViewBadge(badgeText);
+}
+
+// 计算每个母星球的 AOP 范围
+function getAopRange(planetId) {
+  switch (planetId) {
+    case "母星-意图理解": return { min: 1, max: 21 };
+    case "母星-情况判断": return { min: 22, max: 35 };
+    case "母星-形成构想": return { min: 36, max: 48 };
+    case "母星-制定计划": return { min: 49, max: 66 };
+    case "母星-仿真推演": return { min: 67, max: 81 };
+    case "母星-效果评估": return { min: 82, max: 88 };
+    default: return { min: 0, max: 0 };
+  }
+}
+
+// 根据母星球过滤连线透明度
+function getLinkOpacityByPlanet(link, planetId, aopRange) {
+  const sId = link.source.id || link.source;
+  const tId = link.target.id || link.target;
+
+  // 主链路（level 1）
+  if (link.level === 1) {
+    if (sId === planetId || tId === planetId) return 0.95;
+    return 0.08;
+  }
+  // AOP 链（level 3）
+  if (link.level === 3) {
+    if (sId.startsWith("AOP-") && tId.startsWith("AOP-")) {
+      const sNum = parseInt(sId.split("-")[1]);
+      const tNum = parseInt(tId.split("-")[1]);
+      if (sNum >= aopRange.min && sNum <= aopRange.max &&
+          tNum >= aopRange.min && tNum <= aopRange.max) return 0.9;
+    }
+    return 0.04;
+  }
+  // 反馈 + 依赖（level 4, 5）
+  if (link.level === 4 || link.level === 5) {
+    if (sId.startsWith("AOP-") && tId.startsWith("AOP-")) {
+      const sNum = parseInt(sId.split("-")[1]);
+      const tNum = parseInt(tId.split("-")[1]);
+      if ((sNum >= aopRange.min && sNum <= aopRange.max) ||
+          (tNum >= aopRange.min && tNum <= aopRange.max)) return 0.5;
+    }
+    return 0.04;
+  }
+  return 0.1;
+}
+
+// ============================================================
+// 3D 环绕轨道更新（在 onEngineTick 中调用）
+// ============================================================
+
+function updateOrbitCamera() {
+  if (!orbitState.active) return;
+
+  // 全景模式
+  if (currentView === 0) {
+    updateOverviewOrbit();
+    return;
+  }
+
+  // 母星球环绕模式
+  const planetId = orbitState.targetNode;
+  if (!planetId) return;
+
+  const cfg = getOrbitConfig(planetId);
+  const planetPos = getNodePos(planetId);
+
+  orbitState.angle += orbitState.speed;
+
+  const t = orbitState.angle;
+  const R = orbitState.radius;
+  const tx = orbitState.tiltX;
+  const tz = orbitState.tiltZ;
+
+  // 3D 椭圆轨道：以母星球为中心的倾斜轨道
+  // x 和 z 形成椭圆，y 有倾角倾斜
+  const rawX = Math.sin(t) * R;
+  const rawZ = Math.cos(t) * R;
+  const rawY = Math.cos(t) * R * 0.3; // 上下起伏，让轨道有立体感
+
+  // 应用轨道倾角
+  const camX = rawX + rawY * tx;
+  const camY = rawY * Math.cos(tx) + rawZ * Math.sin(tz);
+  const camZ = rawZ * Math.cos(tz) - rawY * Math.sin(tz);
+
+  const targetX = planetPos.x;
+  const targetY = planetPos.y;
+  const targetZ = planetPos.z;
+
+  graph.cameraPosition(
+    { x: targetX + camX, y: targetY + camY, z: targetZ + camZ },
+    { x: targetX, y: targetY, z: targetZ },
+    0
+  );
+}
+
+// ============================================================
+// 辅助函数
+// ============================================================
+
+function getNodePos(nodeId) {
+  const nodes = graph.graphData().nodes;
+  const node = nodes.find(n => n.id === nodeId);
+  return node ? { x: node.x || 0, y: node.y || 0, z: node.z || 0 } : { x: 0, y: 0, z: 0 };
+}
+
+function updateViewBadge(text) {
+  const badge = document.getElementById("view-badge");
+  if (badge) badge.textContent = text;
+}
+
+// ============================================================
+// 交互事件
+// ============================================================
+
+graph.onNodeClick(node => {
+  if (node.layer === 0) {
+    switch (node.id) {
+      case "母星-意图理解":   view1_IntentUnderstanding(); break;
+      case "母星-情况判断":   view2_SituationJudgment();  break;
+      case "母星-形成构想":   view3_ConceptFormation();   break;
+      case "母星-制定计划":   view4_PlanFormulation();    break;
+      case "母星-仿真推演":   view5_Simulation();         break;
+      case "母星-效果评估":   view6_Evaluation();         break;
+    }
+    return;
+  }
+
+  // 点击 AOP 小球 → 短暂拉近 + 高亮链路
+  highlightAopChain(node);
+  const p = getNodePos(node.id);
+  graph.cameraPosition(
+    { x: p.x + 30, y: p.y + 20, z: p.z + 60 },
+    { x: p.x, y: p.y, z: p.z },
+    600
+  );
+  // 3 秒后恢复当前视图
+  setTimeout(() => {
+    if (node.layer === 0) return;
+    const parent = node.parent;
+    switch (parent) {
+      case "母星-意图理解":   view1_IntentUnderstanding(); break;
+      case "母星-情况判断":   view2_SituationJudgment();  break;
+      case "母星-形成构想":   view3_ConceptFormation();   break;
+      case "母星-制定计划":   view4_PlanFormulation();    break;
+      case "母星-仿真推演":   view5_Simulation();         break;
+      case "母星-效果评估":   view6_Evaluation();         break;
+      default: view0_Overview();
+    }
+  }, 3000);
+});
+
+// 双击背景 → 返回全景
+graph.onBackgroundClick(() => {
+  view0_Overview();
+});
+
+// 高亮 AOP 链路
+function highlightAopChain(node) {
+  if (node.layer === 0) return;
+  graph.linkColor(link => {
+    const sId = link.source.id || link.source;
+    const tId = link.target.id || link.target;
+    if (sId === node.id || tId === node.id) return "#FF6600";
+    return getLinkStyle(link).color;
+  });
+  graph.linkOpacity(link => {
+    const sId = link.source.id || link.source;
+    const tId = link.target.id || link.target;
+    if (sId === node.id || tId === node.id) return 1.0;
+    return getLinkStyle(link).opacity * 0.15;
+  });
+}
+
+// 鼠标悬停
+graph.onNodeHover(node => {
+  if (node) {
+    tooltip.innerHTML = `
+      <div class="aop-badge" style="color:${node.color}">
+        ${node.layer === 0 ? '母星球' : 'AOP-' + String(node.aop).padStart(3, '0')}
+      </div>
+      <div class="aop-title">${node.label}</div>
+      ${node.layer > 0
+        ? `<div class="aop-parent">属于：${node.parent}</div>
+           <div class="aop-view-tip">点击母星球进入环绕视角</div>`
+        : `<div class="aop-range">${node.aopRange}</div>
+           <div class="aop-view-tip">点击进入该星 3D 环绕</div>`}
+    `;
+    tooltip.style.display = "block";
+  } else {
+    tooltip.style.display = "none";
+  }
+});
+
+// ============================================================
+// 脉冲动画（与轨道相机共存）
+// ============================================================
+
+graph.onEngineTick(() => {
+  // 轨道相机更新
+  updateOrbitCamera();
+
+  // 脉冲效果
+  const t = Date.now() * 0.002;
+  const nodes = graph.graphData().nodes;
+  nodes.forEach((node, i) => {
+    if (!node.__threeObj) return;
+    const sphere = node.__threeObj.children[0];
+    if (!sphere || !sphere.material) return;
+
+    const phase = i * (Math.PI / 3);
+    const pulse = node.layer === 0
+      ? 0.7 + 0.3 * Math.abs(Math.sin(t * 1.2 + phase))
+      : 0.5 + 0.2 * Math.abs(Math.sin(t + phase));
+    sphere.material.emissiveIntensity = pulse;
+
+    if (node.layer > 0) {
+      const floatY = Math.sin(t * 0.4 + i) * 0.5;
+      node.__threeObj.position.y = (node.y || 0) + floatY;
+    }
+  });
+});
+
+=== 视图切换 UI ===
+
+<div id="view-panel" style="
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(0,0,0,0.8);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 12px;
+  backdrop-filter: blur(10px);
+">
+  <div id="view-badge" style="
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 4px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  ">视图0 全景作战方案</div>
+
+  <button onclick="view0_Overview()"           style="btn(#FFFFFF)">视图0 全景</button>
+  <button onclick="view1_IntentUnderstanding()" style="btn(#FFD700)">视图1 意图理解</button>
+  <button onclick="view2_SituationJudgment()"  style="btn(#4A90D9)">视图2 情况判断</button>
+  <button onclick="view3_ConceptFormation()"   style="btn(#44DD88)">视图3 形成构想</button>
+  <button onclick="view4_PlanFormulation()"    style="btn(#FF9944)">视图4 制定计划</button>
+  <button onclick="view5_Simulation()"         style="btn(#AA55FF)">视图5 仿真推演</button>
+  <button onclick="view6_Evaluation()"         style="btn(#44DDFF)">视图6 效果评估</button>
+</div>
+
+<style>
+  #view-panel button {
+    padding: 6px 12px;
+    border: 1px solid;
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+    color: inherit;
+  }
+  #view-panel button:hover {
+    background: rgba(255,255,255,0.1);
+    transform: scale(1.05);
+  }
+  #view-panel button:active {
+    transform: scale(0.95);
+  }
+</style>
+
+=== 完整配置 ===
+
+// 视图面板默认隐藏，进入视图1~6 后显示
+document.getElementById("view-panel").style.display = "none";
+
+const galaxyGraph = new ForceGraph3D(document.getElementById("3d-graph"))
+
+  .graphData(steps88Data)
+
+  .nodeThreeObject(node => node.layer === 0 ? createPlanet(node) : createAopNode(node))
+  .nodeThreeObjectExtend(false)
+  .nodeVal(node => node.layer === 0 ? 18 : node.size)
+  .nodeColor(node => node.color)
+  .nodeLabel(node => node.layer === 0
+    ? `${node.label}\n${node.aopRange}`
+    : `AOP-${String(node.aop).padStart(3, '0')} ${node.label}`)
+
+  .linkColor(link => getLinkStyle(link).color)
+  .linkWidth(link => getLinkStyle(link).width)
+  .linkOpacity(link => getLinkStyle(link).opacity)
+  .linkLineDashed(link => getLinkStyle(link).dashed ? [4, 3] : null)
+
+  .nodePosition(node => ({ x: node.x, y: node.y, z: node.z }))
+
+  .cameraPosition({ x: 200, y: 80, z: 180 }, { x: 0, y: 0, z: 0 }, 0)
+  .backgroundColor("#050510")
+
+  // 保留力导向（弱排斥力，防止节点重叠）
+  .d3Force("charge", d3.forceManyBody().strength(-30))
+  .d3Force("collide", d3.forceCollide().radius(node => node.layer === 0 ? 25 : 8))
+
+  .onNodeClick(handleNodeClick)
+  .onNodeHover(handleNodeHover)
+  .onBackgroundClick(handleBackgroundClick)
+  .onEngineTick(updatePulse)
+
+  .warmupTicks(100)
+  .cooldownTicks(Infinity);
+
+// 默认启动全景环绕视图
+view0_Overview();

@@ -1,0 +1,67 @@
+{
+  "nodes": [
+    { "id": "围困阻击战", "group": 0, "type": "center", "description": "作战计划总览", "x": 0, "y": 0, "z": 0, "fx": 0, "fy": 0, "fz": 0 },
+
+    { "id": "战场态势分析", "group": 1, "type": "aod", "description": "输入理解", "x": 0, "y": 30, "z": 0, "fx": 0, "fy": 30, "fz": 0 },
+    { "id": "敌情侦察", "group": 1, "description": "敌情侦察", "x": -15, "y": 50, "z": 0, "fx": -15, "fy": 50, "fz": 0 },
+    { "id": "地形勘察", "group": 1, "description": "地形勘察", "x": 0, "y": 55, "z": 5, "fx": 0, "fy": 55, "fz": 5 },
+    { "id": "兵力评估", "group": 1, "description": "兵力评估", "x": 15, "y": 50, "z": 0, "fx": 15, "fy": 50, "fz": 0 },
+
+    { "id": "封锁方案", "group": 2, "type": "aod", "description": "分析判断", "x": 26, "y": 15, "z": 0, "fx": 26, "fy": 15, "fz": 0 },
+    { "id": "补给线切断", "group": 2, "description": "补给线切断", "x": 40, "y": 30, "z": 5, "fx": 40, "fy": 30, "fz": 5 },
+    { "id": "包围圈建立", "group": 2, "description": "包围圈建立", "x": 45, "y": 15, "z": 0, "fx": 45, "fy": 15, "fz": 0 },
+    { "id": "火力封锁部署", "group": 2, "description": "火力封锁部署", "x": 40, "y": 0, "z": -5, "fx": 40, "fy": 0, "fz": -5 },
+
+    { "id": "压缩阶段计划", "group": 3, "type": "aod", "description": "规划生成", "x": 26, "y": -15, "z": 0, "fx": 26, "fy": -15, "fz": 0 },
+    { "id": "第一阶段-外线封控", "group": 3, "description": "第一阶段-外线封控", "x": 40, "y": -30, "z": 5, "fx": 40, "fy": -30, "fz": 5 },
+    { "id": "第二阶段-内线压缩", "group": 3, "description": "第二阶段-内线压缩", "x": 45, "y": -15, "z": 0, "fx": 45, "fy": -15, "fz": 0 },
+    { "id": "第三阶段-定点清剿", "group": 3, "description": "第三阶段-定点清剿", "x": 40, "y": 0, "z": 5, "fx": 40, "fy": 0, "fz": 5 },
+
+    { "id": "消耗战控制", "group": 4, "type": "aod", "description": "执行控制", "x": 0, "y": -30, "z": 0, "fx": 0, "fy": -30, "fz": 0 },
+    { "id": "弹药管控", "group": 4, "description": "弹药管控", "x": -15, "y": -50, "z": 0, "fx": -15, "fy": -50, "fz": 0 },
+    { "id": "轮换机制", "group": 4, "description": "轮换机制", "x": 0, "y": -55, "z": 5, "fx": 0, "fy": -55, "fz": 5 },
+    { "id": "士气维持", "group": 4, "description": "士气维持", "x": 15, "y": -50, "z": 0, "fx": 15, "fy": -50, "fz": 0 },
+
+    { "id": "态势监控", "group": 5, "type": "aod", "description": "反馈适应", "x": -26, "y": -15, "z": 0, "fx": -26, "fy": -15, "fz": 0 },
+    { "id": "实时情报更新", "group": 5, "description": "实时情报更新", "x": -40, "y": -30, "z": 5, "fx": -40, "fy": -30, "fz": 5 },
+    { "id": "敌方突围预警", "group": 5, "description": "敌方突围预警", "x": -45, "y": -15, "z": 0, "fx": -45, "fy": -15, "fz": 0 },
+    { "id": "方案动态调整", "group": 5, "description": "方案动态调整", "x": -40, "y": 0, "z": -5, "fx": -40, "fy": 0, "fz": -5 },
+
+    { "id": "最终突击", "group": 6, "type": "aod", "description": "复盘优化", "x": -26, "y": 15, "z": 0, "fx": -26, "fy": 15, "fz": 0 },
+    { "id": "时机选择", "group": 6, "description": "时机选择", "x": -40, "y": 30, "z": 5, "fx": -40, "fy": 30, "fz": 5 },
+    { "id": "主攻方向", "group": 6, "description": "主攻方向", "x": -45, "y": 15, "z": 0, "fx": -45, "fy": 15, "fz": 0 },
+    { "id": "战果巩固", "group": 6, "description": "战果巩固", "x": -40, "y": 0, "z": -5, "fx": -40, "fy": 0, "fz": -5 }
+  ],
+  "links": [
+    { "source": "围困阻击战", "target": "战场态势分析" },
+    { "source": "围困阻击战", "target": "封锁方案" },
+    { "source": "围困阻击战", "target": "压缩阶段计划" },
+    { "source": "围困阻击战", "target": "消耗战控制" },
+    { "source": "围困阻击战", "target": "态势监控" },
+    { "source": "围困阻击战", "target": "最终突击" },
+
+    { "source": "战场态势分析", "target": "敌情侦察" },
+    { "source": "战场态势分析", "target": "地形勘察" },
+    { "source": "战场态势分析", "target": "兵力评估" },
+
+    { "source": "封锁方案", "target": "补给线切断" },
+    { "source": "封锁方案", "target": "包围圈建立" },
+    { "source": "封锁方案", "target": "火力封锁部署" },
+
+    { "source": "压缩阶段计划", "target": "第一阶段-外线封控" },
+    { "source": "压缩阶段计划", "target": "第二阶段-内线压缩" },
+    { "source": "压缩阶段计划", "target": "第三阶段-定点清剿" },
+
+    { "source": "消耗战控制", "target": "弹药管控" },
+    { "source": "消耗战控制", "target": "轮换机制" },
+    { "source": "消耗战控制", "target": "士气维持" },
+
+    { "source": "态势监控", "target": "实时情报更新" },
+    { "source": "态势监控", "target": "敌方突围预警" },
+    { "source": "态势监控", "target": "方案动态调整" },
+
+    { "source": "最终突击", "target": "时机选择" },
+    { "source": "最终突击", "target": "主攻方向" },
+    { "source": "最终突击", "target": "战果巩固" }
+  ]
+}

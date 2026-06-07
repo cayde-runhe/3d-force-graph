@@ -1,0 +1,353 @@
+3D Force Graph 完全自定义改造指南（Vibecoding 用）
+
+=== 先搞清源码架构 ===
+
+整个库就一个文件：demo/src/3d-force-graph.js，454 行，核心分三块：
+
+一块叫 ThreeForceGraph（不是这个库写的，是它的依赖 three-forcegraph），负责物理模拟 + 创建节点的 ThreeJS 物体。
+一块叫 ThreeRenderObjects（也是依赖），负责 WebGL 渲染器 + 相机 + 控制器 + 光照。
+一块是 DragControls，就是 ThreeJS 原生的拖拽控制器。
+
+_stateInit_ 里创建前两个组件，_init_ 里配置拖拽事件，_animationCycle_ 是渲染循环，每帧调 forceGraph.tickFrame() 再调 renderObjs.tick()。
+
+一句话：这个库的本质是一个帮你管好了渲染循环和物理引擎的状态机，你只需要往里塞 ThreeJS 物体。
+
+=== 改造分 3 条路 ===
+
+路径 1：API 级定制（不改源码，最常用）
+路径 2：源码 fork（改核心逻辑）
+路径 3：底层接管（完全自绘）
+
+=== 路径 1：API 级定制（最常用） ===
+
+核心就是 nodeThreeObject 和 linkThreeObject 这两个方法，往里 return 一个 THREE.Object3D 就行，库会自动把这个物体放到节点/链路的位置上，还会自动处理物理模拟的位置更新。
+
+1. 加载 GLTF 3D 模型
+
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+const loader = new GLTFLoader();
+
+graph.nodeThreeObject((node) => {
+  if (!node.modelUrl) return null;  // 没有模型就用默认球体
+
+  const group = new THREE.Group();
+  loader.load(node.modelUrl, (gltf) => {
+    const model = gltf.scene;
+    // 自动缩放到合适大小
+    const box = new THREE.Box3().setFromObject(model);
+    const size = box.getSize(new THREE.Vector3());
+    model.scale.setScalar(10 / Math.max(size.x, size.y, size.z));
+    // 居中
+    const center = box.getCenter(new THREE.Vector3());
+    model.position.sub(center.clone().multiplyScalar(model.scale.x));
+    group.add(model);
+  });
+  return group;
+})
+.nodeThreeObjectExtend(false);  // false=替换默认球体，true=叠加在球体上
+
+2. 带骨骼动画的模型
+
+const mixers = [];
+
+graph.nodeThreeObject((node) => {
+  if (!node.animModelUrl) return null;
+  const group = new THREE.Group();
+  loader.load(node.animModelUrl, (gltf) => {
+    const model = gltf.scene;
+    model.scale.setScalar(node.scale || 5);
+    group.add(model);
+    // 播放第一个动画片段
+    if (gltf.animations.length) {
+      const mixer = new THREE.AnimationMixer(model);
+      mixer.clipAction(gltf.animations[0]).play();
+      mixers.push(mixer);
+    }
+  });
+  return group;
+})
+.onEngineTick(() => {
+  mixers.forEach(m => m.update(0.016));
+});
+
+3. 合成节点（模型 + 光晕 + 文字标签）
+
+graph.nodeThreeObject((node) => {
+  const group = new THREE.Group();
+
+  // 底层模型（根据类型自己构造）
+  group.add(createModelFromType(node.type));
+
+  // 叠加光晕球
+  const glow = new THREE.Mesh(
+    new THREE.SphereGeometry(node.size * 1.5, 16, 16),
+    new THREE.MeshBasicMaterial({ color: node.color, transparent: true, opacity: 0.15 })
+  );
+  group.add(glow);
+
+  // Canvas 文字标签（作为子节点，跟随父节点移动）
+  const canvas = document.createElement('canvas');
+  canvas.width = 256; canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 32px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(node.name, 128, 40);
+  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
+    map: new THREE.CanvasTexture(canvas),
+    transparent: true
+  }));
+  sprite.position.set(0, node.size * 2, 0);
+  sprite.scale.set(40, 10);
+  group.add(sprite);
+
+  return group;
+})
+.nodeThreeObjectExtend(false);
+
+注意：sprite 作为 group 的子节点，它的坐标是相对 group 的，所以会自动跟着节点移动，非常方便。
+
+4. 自定义曲线链路
+
+graph.linkThreeObject((link) => {
+  // link.source 和 link.target 是节点数据对象，有 x, y, z 坐标
+  const start = new THREE.Vector3(link.source.x, link.source.y, link.source.z);
+  const end   = new THREE.Vector3(link.target.x, link.target.y, link.target.z);
+  const mid   = start.clone().lerp(end, 0.5).add(new THREE.Vector3(0, 15, 0));
+
+  const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
+  const tubeGeo = new THREE.TubeGeometry(curve, 20, 0.5, 8, false);
+  const tubeMat = new THREE.MeshPhongMaterial({
+    color: link.color || '#00ffff',
+    emissive: link.color || '#00ffff',
+    emissiveIntensity: 0.3
+  });
+  return new THREE.Mesh(tubeGeo, tubeMat);
+});
+
+5. 节点自带粒子特效
+
+graph.nodeThreeObject((node) => {
+  const geo = new THREE.BufferGeometry();
+  const count = node.particleCount || 100;
+  const positions = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    positions[i*3]   = (Math.random()-0.5) * 20;
+    positions[i*3+1] = (Math.random()-0.5) * 20;
+    positions[i*3+2] = (Math.random()-0.5) * 20;
+  }
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+  // 发光粒子纹理（128x128 canvas 圆形渐变）
+  const tex = createGlowTexture();  // 自己画一个发光圆
+
+  const mat = new THREE.PointsMaterial({
+    size: 3,
+    map: tex,
+    transparent: true,
+    blending: THREE.AdditiveBlending,  // 加法混合，发光效果
+    depthWrite: false
+  });
+  return new THREE.Points(geo, mat);
+});
+
+6. 节点每帧有额外动画（绕轴旋转等）
+
+graph.nodePositionUpdate((threeObj, coords, nodeData) => {
+  // threeObj 是节点的 ThreeJS 物体，coords 是 {x,y,z}，nodeData 是原始数据
+  threeObj.rotation.y += 0.01;  // 绕 Y 轴旋转
+  threeObj.rotation.x += 0.005;
+  return false;  // false=继续执行库的默认位置更新，true=跳过库的内置逻辑
+});
+
+=== 路径 2：源码 Fork（改核心逻辑） ===
+
+需要改 demo/src/3d-force-graph.js，然后重新 build。适合要改节点创建逻辑、拖拽行为、渲染循环的场景。
+
+1. 在 stateInit 里注入自定义节点/链路创建
+
+stateInit: ({ controlType, rendererConfig, extraRenderers }) => {
+  const forceGraph = new ThreeForceGraph();
+
+  // 在 forceGraph 创建时就塞入自定义函数
+  forceGraph
+    .nodeThreeObject(d => createMyCustomNode(d))
+    .linkThreeObject(d => createMyCustomLink(d));
+
+  return {
+    forceGraph,
+    renderObjs: ThreeRenderObjects({ controlType, rendererConfig, extraRenderers })
+      // 改灯光配置
+      .lights([
+        new three.AmbientLight(0x404080, 1.0),
+        new three.DirectionalLight(0xffffff, 0.8),
+        new three.PointLight(0xff4444, 1.5, 50),  // 加个点光源
+      ])
+  };
+},
+
+2. 在 _animationCycle 里加自定义每帧逻辑
+
+_animationCycle(state) {
+  state.forceGraph.tickFrame();
+
+  // === 这里插入你的代码 ===
+  // 比如：让所有标签精灵始终朝向相机
+  state.graphData.nodes.forEach(node => {
+    if (node.__threeObj?.__labelSprite) {
+      node.__threeObj.__labelSprite.lookAt(
+        state.renderObjs.camera().position
+      );
+    }
+  });
+
+  state.renderObjs.tick();
+  state.animationFrameRequestId = requestAnimationFrame(this._animationCycle);
+}
+
+3. 改拖拽行为（改 init 里的 DragControls）
+
+DragControls 的逻辑在 init 函数里，大约行 258-365。
+
+dragstart：拖拽开始时，除了锁定节点位置，还可以记录拖拽开始时间、初始化路径数组。
+drag：拖拽过程中，除了更新位置，还可以收集路径点、计算速度、触发自定义约束。
+dragend：拖拽结束时，除了释放节点，还可以计算拖拽速度、触发事件、播放动画。
+
+比如要加拖拽速度记录：
+
+dragstart: function(event) {
+  event.object.__dragStartTime = Date.now();
+  event.object.__dragPath = [];
+}
+drag: function(event) {
+  // ...原有位置更新...
+  event.object.__dragPath.push({
+    x: node.x, y: node.y, z: node.z,
+    t: Date.now() - event.object.__dragStartTime
+  });
+}
+dragend: function(event) {
+  const velocity = calcVelocity(event.object.__dragPath);
+  state.onNodeDragEnd(node, { velocity, path: event.object.__dragPath });
+  delete event.object.__dragStartTime;
+  delete event.object.__dragPath;
+}
+
+4. 增加新的 Props 和 Methods
+
+// props 里加一个新的配置项
+myCustomSpeed: { default: 1.0, triggerUpdate: false },
+
+// methods 里加一个新方法
+setNodeHighlight: function(state, nodeId, on) {
+  const node = state.graphData.nodes.find(n => n.id === nodeId);
+  if (node?.__threeObj) {
+    node.__threeObj.traverse(child => {
+      if (child.isMesh) {
+        child.material.emissive = on
+          ? new THREE.Color(0xffaa00)
+          : new THREE.Color(0x000000);
+      }
+    });
+  }
+  return this;
+}
+
+5. 改渲染器配置
+
+new ForceGraph3D(domElement, {
+  rendererConfig: {
+    antialias: true,
+    alpha: true,
+    powerPreference: 'high-performance',   // 开启高性能模式
+    logarithmicDepthBuffer: true,         // 解决大场景物体穿插闪烁
+  }
+})
+
+=== 路径 3：底层接管（完全自绘） ===
+
+最彻底的一条路。把渲染循环全部拿过来自己写，库只保留物理引擎。
+
+1. 暂停库渲染，自己驱动
+
+const graph = ForceGraph3D()(domElement);
+const scene = graph.scene();
+const camera = graph.camera();
+const renderer = graph.renderer();
+const controls = graph.controls();
+
+graph.pauseAnimation();  // 关键：停掉库的渲染循环
+
+function animate() {
+  requestAnimationFrame(animate);
+  graph.forceGraph?.tickFrame?.();  // 让物理跑
+  renderer.setClearColor(0x000011);
+  renderer.clear();
+  renderer.render(scene, camera);  // 自己渲染
+  controls.update();
+}
+animate();
+
+现在 scene 里有库创建的节点物体，但渲染方式完全由你控制。
+
+2. 替换整个渲染器
+
+const graph = ForceGraph3D()(domElement);
+const oldRenderer = graph.renderer();
+
+const newRenderer = new THREE.WebGLRenderer({
+  antialias: true, alpha: true, powerPreference: 'high-performance'
+});
+newRenderer.setSize(domElement.clientWidth, domElement.clientHeight);
+
+const newCanvas = newRenderer.domElement;
+domElement.querySelector('div > div').appendChild(newCanvas);
+oldRenderer.dispose();
+
+// 之后用 newRenderer 渲染，scene 和 camera 用 graph.scene() / graph.camera() 拿到的
+
+3. 接入自定义后处理（Bloom/Glow 等）
+
+import { EffectComposer, UnrealBloomPass } from 'three/examples/jsm/postprocessing/';
+
+const graph = ForceGraph3D()(domElement);
+const composer = graph.postProcessingComposer();
+
+const bloom = new UnrealBloomPass(
+  new THREE.Vector2(window.innerWidth, window.innerHeight),
+  1.5, 0.4, 0.85  // strength, radius, threshold
+);
+composer.addPass(bloom);
+
+graph.pauseAnimation();
+
+function animate() {
+  requestAnimationFrame(animate);
+  graph.forceGraph?.tickFrame?.();
+  composer.render();  // 用 composer 替代 renderer.render()
+  graph.controls()?.update();
+}
+animate();
+
+=== 改造层次对照表 ===
+
+API 级（不改源码）：用 nodeThreeObject / linkThreeObject / onEngineTick → GLTF 模型、图片精灵、粒子特效、Canvas 贴图、合成节点、自定义曲线链路
+源码 fork（改核心逻辑）：改 stateInit / _animationCycle / init → 替换节点/链路创建、改拖拽行为、增删 Props/Methods、改光照
+底层接管（完全自绘）：scene() / camera() / renderer() + pauseAnimation() → 完全自绘渲染、替换渲染器、自定义后处理 pipeline
+
+最推荐：API 级 + 源码 fork 结合，路径 3 基本等于重写，不推荐。
+
+=== 构建和调试 ===
+
+npm install
+npm run build          # 在 demo/ 目录下跑，构建输出到 demo/dist/
+
+调试：在浏览器控制台
+graph = ForceGraph3D()(document.getElementById('graph'))
+graph.scene()           # 拿到 ThreeJS 场景，看节点树
+graph.renderer()        # 拿到渲染器
+graph.controls()        # 拿到 OrbitControls
+graph.forceGraph         # 拿到内部 ThreeForceGraph 实例
+
+修改源码后重新 npm run build，然后用 dist/3d-force-graph.js 替换 CDN 版本即可测试。
